@@ -1,0 +1,42 @@
+10
+
+dir
+0
+https://localhost/svn/JAVA/trunk/JSF/JSF_w3_klasvoorbeeld/src
+https://localhost/svn/JAVA
+add
+
+
+
+
+
+
+
+svn:special svn:externals svn:needs-lock
+
+
+
+
+
+
+
+
+
+
+
+d9b37857-89d7-e645-9f93-a0cac0d2c454
+
+downloadsimulator
+dir
+
+
+
+add
+
+threadrunner
+dir
+
+
+
+add
+
