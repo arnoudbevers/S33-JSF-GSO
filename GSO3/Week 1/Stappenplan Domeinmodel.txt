@@ -1,8 +1,0 @@
-1. 
-	Bankrekening heeft een nummer, een eigenaar, een saldo en een kredietlimiet.
-
-2.
-	Gebruiker heeft een naam en woonplaats en kan meerdere bankrekeningen hebben en inloggegevens.
-	
-4.
-	Gebruiker heeft geen inlog/uitlog methode omdat er nog geen account is als je inlogt, die wordt terug gegeven vanuit de database-klasse.
