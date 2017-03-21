@@ -4,6 +4,9 @@
  */
 package jsf31kochfractalfx;
 
+import java.util.Observable;
+import java.util.Observer;
+
 import calculate.*;
 import javafx.application.Application;
 import javafx.application.Platform;
@@ -56,9 +59,10 @@ public class JSF31KochFractalFX extends Application {
     private final int kpWidth = 500;
     private final int kpHeight = 500;
     
+    public KochFractal fractal;
+    
     @Override
     public void start(Stage primaryStage) {
-       
         // Define grid pane
         GridPane grid;
         grid = new GridPane();
@@ -157,8 +161,14 @@ public class JSF31KochFractalFX extends Application {
         
         // Create Koch manager and set initial level
         resetZoom();
-        kochManager = new KochManager(this);
-        kochManager.changeLevel(currentLevel);
+//        kochManager = new KochManager(this);
+//        kochManager.changeLevel(currentLevel);
+        
+    	kochManager = new KochManager(this);
+    	
+    	fractal = new KochFractal();
+    	fractal.addObserver(kochManager);
+		fractal.setLevel(currentLevel);
         
         // Create the scene and add the grid pane
         Group root = new Group();
@@ -169,6 +179,8 @@ public class JSF31KochFractalFX extends Application {
         primaryStage.setTitle("Koch Fractal");
         primaryStage.setScene(scene);
         primaryStage.show();
+        
+        requestDrawEdges();
     }
     
     public void clearKochPanel() {
@@ -231,6 +243,7 @@ public class JSF31KochFractalFX extends Application {
             labelLevel.setText("Level: " + currentLevel);
             kochManager.changeLevel(currentLevel);
         }
+        requestDrawEdges();
     } 
     
     private void decreaseLevelButtonActionPerformed(ActionEvent event) {
@@ -240,6 +253,7 @@ public class JSF31KochFractalFX extends Application {
             labelLevel.setText("Level: " + currentLevel);
             kochManager.changeLevel(currentLevel);
         }
+        requestDrawEdges();
     } 
 
     private void fitFractalButtonActionPerformed(ActionEvent event) {
