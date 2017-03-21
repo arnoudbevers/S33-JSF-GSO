@@ -170,6 +170,8 @@ public class JSF31KochFractalFX extends Application {
     	fractal.addObserver(kochManager);
 		fractal.setLevel(currentLevel);
         
+		kochManager.changeLevel(currentLevel);
+		
         // Create the scene and add the grid pane
         Group root = new Group();
         Scene scene = new Scene(root, kpWidth+50, kpHeight+170);

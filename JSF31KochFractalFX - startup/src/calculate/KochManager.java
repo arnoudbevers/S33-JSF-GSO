@@ -52,6 +52,6 @@ public class KochManager implements Observer {
 	public void update(Observable o, Object arg) {
 		Edge e = (Edge) arg;
 		edges.add(e);
-		//System.out.println("Begin punt: (" +e.X1 + ", " + e.Y1 + "); Eind punt: ("+e.X2+", "+e.Y2+") Color: " + e.color);
+		this.kffx.setTextNrEdges(this.kffx.fractal.getNrOfEdges() + "");
 	}
 }
