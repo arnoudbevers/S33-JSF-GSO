@@ -93,10 +93,9 @@ public class TimeTest {
 		/**
 	     * 
 	     * @param timeSpan
-	     * @return if this time span and [timeSpan] are consecutive or possess a
-	     * common intersection, then the smallest time span ts will be returned, 
-	     * whereby this time span and [timeSpan] are part of ts, 
-	     * otherwise null will be returned 
+	     * @return the largest time span which is part of this time span 
+	     * and [timeSpan] will be returned; if the intersection is empty null will 
+	     * be returned
 	     */
 		Time bt1 = new Time(2017, 3, 8, 8, 23);
 		Time et1 = new Time(2017, 3, 25, 17, 25);
