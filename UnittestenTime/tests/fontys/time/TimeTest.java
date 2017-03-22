@@ -84,7 +84,8 @@ public class TimeTest {
 		
 		TimeSpan ts = (TimeSpan) span1.unionWith(span2);
 		assertNotNull(ts);
+		System.out.println(ts.getEndTime().getDay());
 		assertEquals(8, ts.getBeginTime().getDay());
-		assertEquals(27, ts.getEndTime().getDay());
+		assertEquals(28, ts.getEndTime().getDay());
 	}
 }
