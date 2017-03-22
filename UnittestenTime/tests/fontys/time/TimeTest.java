@@ -84,8 +84,31 @@ public class TimeTest {
 		
 		TimeSpan ts = (TimeSpan) span1.unionWith(span2);
 		assertNotNull(ts);
-		System.out.println(ts.getEndTime().getDay());
 		assertEquals(8, ts.getBeginTime().getDay());
 		assertEquals(28, ts.getEndTime().getDay());
+	}
+	
+	@Test
+	public void testTimeSpanIntersect() {
+		/**
+	     * 
+	     * @param timeSpan
+	     * @return if this time span and [timeSpan] are consecutive or possess a
+	     * common intersection, then the smallest time span ts will be returned, 
+	     * whereby this time span and [timeSpan] are part of ts, 
+	     * otherwise null will be returned 
+	     */
+		Time bt1 = new Time(2017, 3, 8, 8, 23);
+		Time et1 = new Time(2017, 3, 25, 17, 25);
+		TimeSpan span1 = new TimeSpan(bt1, et1);
+		
+		Time bt2 = new Time(2017, 3, 12, 8, 23);
+		Time et2 = new Time(2017, 3, 28, 17, 25);
+		TimeSpan span2 = new TimeSpan(bt2, et2);
+		
+		TimeSpan ts = (TimeSpan) span1.intersectionWith(span2);
+		assertNotNull(ts);
+		assertEquals(12, ts.getBeginTime().getDay());
+		assertEquals(25, ts.getEndTime().getDay());
 	}
 }
