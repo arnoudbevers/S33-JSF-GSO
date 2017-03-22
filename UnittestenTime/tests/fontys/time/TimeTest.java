@@ -110,4 +110,147 @@ public class TimeTest {
 		assertEquals(12, ts.getBeginTime().getDay());
 		assertEquals(25, ts.getEndTime().getDay());
 	}
+	
+	@Test
+	public void testTimeSpanIsPartOf() {
+		/**
+	     * 
+	     * @param timeSpan
+	     * @return true if all moments within this time span are included within [timeSpan], 
+	     * otherwise false
+	     */
+		Time bt1 = new Time(2017, 3, 8, 8, 23);
+		Time et1 = new Time(2017, 3, 25, 17, 25);
+		TimeSpan span1 = new TimeSpan(bt1, et1);
+		
+		Time bt2 = new Time(2017, 3, 12, 8, 23);
+		Time et2 = new Time(2017, 3, 17, 17, 25);
+		TimeSpan span2 = new TimeSpan(bt2, et2);
+		
+		
+		assertTrue(span1.isPartOf(span2));
+	}
+	
+	@Test(expected = IllegalArgumentException.class)
+	public void testTimeSpanChangeLengthException() {
+		/**
+	     * the end time of this time span will be moved up with [minutes] minutes
+	     * @param minutes  minutes + length of this period must be positive  
+	     */
+		Time bt1 = new Time(2017, 3, 8, 8, 23);
+		Time et1 = new Time(2017, 3, 25, 17, 25);
+		TimeSpan span1 = new TimeSpan(bt1, et1);
+		span1.changeLengthWith(-1);
+	}
+	
+	@Test
+	public void testTimeSpanChangeLength() {
+		/**
+	     * the end time of this time span will be moved up with [minutes] minutes
+	     * @param minutes  minutes + length of this period must be positive  
+	     */
+		Time bt1 = new Time(2017, 3, 8, 8, 23);
+		Time et1 = new Time(2017, 3, 25, 17, 25);
+		TimeSpan span1 = new TimeSpan(bt1, et1);
+		span1.changeLengthWith(10);
+		assertEquals(35, span1.getEndTime().getMinutes());
+	}
+	
+	@Test
+	public void testTimeSpanMove() {
+		/**
+	     * the begin and end time of this time span will be moved up both with [minutes]
+	     * minutes
+	     * @param minutes (a negative value is allowed)
+	     */
+		Time bt1 = new Time(2017, 3, 8, 8, 23);
+		Time et1 = new Time(2017, 3, 25, 17, 25);
+		TimeSpan span1 = new TimeSpan(bt1, et1);
+		span1.move(10);
+		assertEquals(33, span1.getBeginTime().getMinutes());
+		assertEquals(35, span1.getEndTime().getMinutes());
+	}
+	
+	@Test(expected = IllegalArgumentException.class)
+	public void testTimeSpanSetBeginTimeException() {
+		/**
+	     * beginTime will be the new begin time of this time span
+	     * @param beginTime must be earlier than the current end time
+	     * of this time span
+	     */
+		
+		Time bt1 = new Time(2017, 3, 8, 8, 23);
+		Time et1 = new Time(2017, 3, 25, 17, 25);
+		TimeSpan span1 = new TimeSpan(bt1, et1);
+		
+		Time bt2 = new Time(2017, 3, 26, 8, 23);
+		
+		span1.setBeginTime(bt2);
+	}
+	
+	@Test
+	public void testTimeSpanSetBeginTime() {
+		/**
+	     * beginTime will be the new begin time of this time span
+	     * @param beginTime must be earlier than the current end time
+	     * of this time span
+	     */
+		
+		Time bt1 = new Time(2017, 3, 8, 8, 23);
+		Time et1 = new Time(2017, 3, 25, 17, 25);
+		TimeSpan span1 = new TimeSpan(bt1, et1);
+		
+		Time bt2 = new Time(2017, 3, 22, 8, 23);
+		
+		span1.setBeginTime(bt2);
+		assertEquals(25, span1.getBeginTime().getDay());
+	}
+	
+	@Test(expected = IllegalArgumentException.class)
+	public void testTimeSpanSetEndTimeException() {
+		/**
+	     * endTime will be the new end time of this time span
+	     * @param endTime must be later than the current begin time
+	     * of this time span
+	     */
+		
+		Time bt1 = new Time(2017, 3, 8, 8, 23);
+		Time et1 = new Time(2017, 3, 25, 17, 25);
+		TimeSpan span1 = new TimeSpan(bt1, et1);
+		
+		Time et2 = new Time(2017, 3, 7, 8, 23);
+		
+		span1.setEndTime(et2);
+	}
+	
+	@Test
+	public void testTimeSpanSetEndTime() {
+		/**
+	     * endTime will be the new end time of this time span
+	     * @param endTime must be later than the current begin time
+	     * of this time span
+	     */
+		
+		Time bt1 = new Time(2017, 3, 8, 8, 23);
+		Time et1 = new Time(2017, 3, 25, 17, 25);
+		TimeSpan span1 = new TimeSpan(bt1, et1);
+		
+		Time et2 = new Time(2017, 3, 12, 8, 23);
+		
+		span1.setEndTime(et2);
+		assertEquals(12, span1.getEndTime().getDay());
+	}
+	
+	@Test
+	public void testTimeSpanLength() {
+		/**
+	     * 
+	     * @return the length of this time span expressed in minutes (always positive)
+	     */
+		Time bt1 = new Time(2017, 3, 8, 8, 23);
+		Time et1 = new Time(2017, 3, 8, 8, 35);
+		TimeSpan span1 = new TimeSpan(bt1, et1);
+		
+		assertEquals(12, span1.length());
+	}
 }
