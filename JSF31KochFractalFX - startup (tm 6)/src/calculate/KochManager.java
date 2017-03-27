@@ -8,12 +8,14 @@ import java.util.Observer;
 import jsf31kochfractalfx.JSF31KochFractalFX;
 import timeutil.TimeStamp;
 
-public class KochManager implements Observer {
+public class KochManager {
 
-	private JSF31KochFractalFX kffx;
+	public JSF31KochFractalFX kffx;
 	private TimeStamp tsCalc;
 	private TimeStamp tsDraw;
-	private List<Edge> edges;
+        //Volatile = thread-safe
+	public volatile List<Edge> edges;
+        public int count=0;
 	
 	public KochManager(JSF31KochFractalFX kffx) {
 		this.kffx = kffx;
@@ -29,7 +31,13 @@ public class KochManager implements Observer {
 		tsCalc.setBegin("Begin calculating fractals");
 		
 		this.kffx.fractal.setLevel(level);
-		
+                edges.clear();
+                for(int i = 1; i <=3;i++) {
+                    KochRunnable run = new KochRunnable(this, this.kffx.fractal, i);
+                    this.kffx.fractal.addObserver(run);
+                    Thread t = new Thread(run);
+                    t.start();
+                }		
 		tsCalc.setEnd("End calculating fractals");
 		this.kffx.setTextCalc(tsCalc.toString());
 	}
@@ -41,17 +49,10 @@ public class KochManager implements Observer {
 		tsDraw.setBegin("Begin drawing fractals");
 		
 		for(Edge e : edges) {
-			this.kffx.drawEdge(e);
+                    this.kffx.drawEdge(e);
 		}
 		
 		tsDraw.setEnd("End drawing fractals");
 		this.kffx.setTextDraw(tsDraw.toString());
-	}
-
-	@Override
-	public void update(Observable o, Object arg) {
-		Edge e = (Edge) arg;
-		edges.add(e);
-		this.kffx.setTextNrEdges(this.kffx.fractal.getNrOfEdges() + "");
 	}
 }

@@ -65,9 +65,6 @@ public class KochFractal extends Observable {
     public void setLevel(int lvl) {
         level = lvl;
         nrOfEdges = (int) (3 * Math.pow(4, level - 1));
-        this.generateBottomEdge();
-        this.generateLeftEdge();
-        this.generateRightEdge();
     }
 
     public int getLevel() {
