@@ -26,11 +26,21 @@ public class AppointmentTest {
 		/**
 		 * Adds a contact to the Appointment but only if the contact has no intervering appointments
 		 * @param Contact 
-		 * @return boolean if the addition was completed succesfully
+		 * @return boolean if the addition was completed successfully
 		 */
 		Time bt = new Time(2017, 3, 8, 8, 23);
 		Time et = new Time(2017, 3, 25, 17, 25);
 		TimeSpan span = new TimeSpan(bt, et);
 		Appointment ap = new Appointment("Test Appointment", span);
+
+		Time bt2 = new Time(2017, 3, 12, 8, 23);
+		Time et2 = new Time(2017, 3, 27, 17, 25);
+		TimeSpan span2 = new TimeSpan(bt2, et2);
+		Appointment ap2 = new Appointment("Test Appointment", span2);
+
+		Contact c  = new Contact();
+		
+		c.addAppointment(ap);
+		ap2.addContact(c);
 	}
 }
