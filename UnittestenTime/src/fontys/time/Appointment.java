@@ -5,6 +5,8 @@
  */
 package fontys.time;
 
+import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -25,6 +27,7 @@ public class Appointment {
 	public Appointment(String subject, ITimeSpan timespan) {
 		this.subject = subject;
 		this.timespan = timespan;
+		this.invitees = new ArrayList<Contact>();
 	}
 	
 	public String getSubject() {
@@ -41,18 +44,18 @@ public class Appointment {
 
 	/**
 	 * Adds a contact to the Appointment but only if the contact has no intervening appointments
-	 * @param Contact 
+	 * @param Contact cannot be null
 	 * @return boolean if the addition was completed successfully
 	 */
 	public boolean addContact(Contact c) {
+		if(c == null) {
+			throw new IllegalArgumentException("Contact cannot be null");
+		}
 		boolean noConflict = true;
-<<<<<<< HEAD
-		for(Appointment a : c.appointments()) {
-=======
-		while(c.appointments().hasNext()) {
-			Appointment a = c.appointments.next();
->>>>>>> 902e55e12db56d99a44341015942350a8a22f64e
-			noConflict = a.getTimeSpan().intersectionWith(getTimeSpan()) != null;
+		Iterator<Appointment> it = c.appointments();
+		while(it.hasNext()) {
+			Appointment a = it.next();
+			noConflict = a.getTimeSpan().intersectionWith(getTimeSpan()) == null;
 			if(!noConflict) break;
 		}
 		if(noConflict) {
@@ -61,7 +64,7 @@ public class Appointment {
 		return noConflict;
 	}
 	
-	public void removeContact(Contact c) {
-		this.invitees.remove(c);
+	public boolean removeContact(Contact c) {
+		return this.invitees.remove(c);
 	}
 }

@@ -20,7 +20,7 @@ public class Contact {
      * Initializes the Contact class
      * @param name the name of the contact
      */
-    public void Contact(String name) {
+    public Contact(String name) {
         this.name = name;
         this.agenda = new ArrayList<Appointment>();
     }

@@ -10,9 +10,5 @@ import org.junit.Test;
  * @author arnoudbevers
  */
 public class ContactTest{
-    @Test
-    public ContactTest() {
-        
-    }
   
 }
