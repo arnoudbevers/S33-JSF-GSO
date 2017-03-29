@@ -52,16 +52,12 @@ public class Appointment {
 			throw new IllegalArgumentException("Contact cannot be null");
 		}
 		boolean noConflict = true;
-<<<<<<< HEAD
-		while(c.appointments().hasNext()) {
-			Appointment a = c.appointments().next();
-			noConflict = a.getTimeSpan().intersectionWith(getTimeSpan()) != null;
-=======
+
 		Iterator<Appointment> it = c.appointments();
 		while(it.hasNext()) {
 			Appointment a = it.next();
 			noConflict = a.getTimeSpan().intersectionWith(getTimeSpan()) == null;
->>>>>>> 7e28e81349c503448b0ae59cb51bd7057026426f
+
 			if(!noConflict) break;
 		}
 		if(noConflict) {
