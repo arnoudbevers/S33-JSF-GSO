@@ -9,6 +9,7 @@ import org.junit.Test;
  *
  * @author arnoudbevers
  */
+<<<<<<< HEAD
 public class ContactTest {
 
     Contact contact;
@@ -57,4 +58,8 @@ public class ContactTest {
     
     
 
+=======
+public class ContactTest{
+  
+>>>>>>> 7e28e81349c503448b0ae59cb51bd7057026426f
 }
