@@ -40,13 +40,13 @@ public class Appointment {
 	}
 
 	/**
-	 * Adds a contact to the Appointment but only if the contact has no intervering appointments
+	 * Adds a contact to the Appointment but only if the contact has no intervening appointments
 	 * @param Contact 
-	 * @return boolean if the addition was completed succesfully
+	 * @return boolean if the addition was completed successfully
 	 */
 	public boolean addContact(Contact c) {
 		boolean noConflict = true;
-		for(Appointment a : c.appointments) {
+		for(Appointment a : c.appointments()) {
 			noConflict = a.getTimeSpan().intersectionWith(getTimeSpan()) != null;
 			if(!noConflict) break;
 		}

@@ -42,11 +42,12 @@ public class Contact {
         if (a == null) {
             throw new IllegalArgumentException("Appointment can't be null!");
         }
+        boolean isConflict = false;
         for (Appointment ap : this.agenda) {
-            if (ap.getTimeSpan().intersectionWith(a.getTimeSpan())) {
+            if (isConflict = ap.getTimeSpan().intersectionWith(a.getTimeSpan())!= null) {
                 return false;
             }
-            if (ap.getTimeSpan().unionWith(a.getTimeSpan())) {
+            if (isConflict = ap.getTimeSpan().unionWith(a.getTimeSpan()) != null) {
                 return false;
             }
         }
