@@ -5,12 +5,15 @@
  */
 package fontys.time;
 
+import java.util.List;
+
 /**
  *
  * @author arnoudbevers
  */
 public class Contact {
     private String name;
+    public List<Appointment> appointments;
     
     public void Contact(String name){
         this.name = name;
@@ -21,6 +24,6 @@ public class Contact {
     }
     
     protected boolean addAppointment(Appointment a){
-        
+        return false;
     }
 }   
