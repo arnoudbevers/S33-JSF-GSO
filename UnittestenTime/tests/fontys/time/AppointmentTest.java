@@ -4,6 +4,11 @@ import static org.junit.Assert.*;
 
 import org.junit.Test;
 
+/**
+ * 
+ * @author bramhoven
+ *
+ */
 public class AppointmentTest {
 	@Test
 	public void testAppointmentCreation() {
