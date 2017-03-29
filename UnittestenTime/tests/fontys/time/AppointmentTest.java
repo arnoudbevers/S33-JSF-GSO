@@ -38,7 +38,7 @@ public class AppointmentTest {
 		TimeSpan span2 = new TimeSpan(bt2, et2);
 		Appointment ap2 = new Appointment("Test Appointment", span2);
 
-		Contact c  = new Contact();
+		Contact c  = new Contact("Karel Ankerboef");
 		
 		c.addAppointment(ap);
 		ap2.addContact(c);

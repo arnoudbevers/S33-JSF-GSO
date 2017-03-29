@@ -1,4 +1,4 @@
-/*
+    /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
@@ -20,7 +20,7 @@ public class Contact {
      * Initializes the Contact class
      * @param name the name of the contact
      */
-    public void Contact(String name) {
+    public Contact(String name) {
         this.name = name;
         this.agenda = new ArrayList<Appointment>();
     }

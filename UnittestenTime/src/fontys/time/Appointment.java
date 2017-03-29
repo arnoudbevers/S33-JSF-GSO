@@ -9,7 +9,7 @@ import java.util.List;
 
 /**
  *
- * @author arnienoob
+ * @author bramkut
  */
 public class Appointment {
     
@@ -46,12 +46,8 @@ public class Appointment {
 	 */
 	public boolean addContact(Contact c) {
 		boolean noConflict = true;
-<<<<<<< HEAD
-		for(Appointment a : c.appointments()) {
-=======
 		while(c.appointments().hasNext()) {
-			Appointment a = c.appointments.next();
->>>>>>> 902e55e12db56d99a44341015942350a8a22f64e
+			Appointment a = c.appointments().next();
 			noConflict = a.getTimeSpan().intersectionWith(getTimeSpan()) != null;
 			if(!noConflict) break;
 		}
