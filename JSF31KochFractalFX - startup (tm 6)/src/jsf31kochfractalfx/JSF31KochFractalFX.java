@@ -168,7 +168,7 @@ public class JSF31KochFractalFX extends Application {
         kochManager = new KochManager(this);
 
         fractal = new KochFractal();
-        fractal.setLevel(currentLevel);
+        kochManager.changeLevel(currentLevel);
 
         // Create the scene and add the grid pane
         Group root = new Group();
@@ -179,8 +179,6 @@ public class JSF31KochFractalFX extends Application {
         primaryStage.setTitle("Koch Fractal");
         primaryStage.setScene(scene);
         primaryStage.show();
-
-        requestDrawEdges();
     }
 
     public void clearKochPanel() {
@@ -214,7 +212,11 @@ public class JSF31KochFractalFX extends Application {
     }
 
     public void setTextNrEdges(String text) {
-        labelNrEdgesText.setText(text);
+    	Platform.runLater(new Runnable() {
+    		public void run() {
+    			labelNrEdgesText.setText(text);
+    		}
+    	});
     }
 
     public void setTextCalc(String text) {
@@ -227,10 +229,8 @@ public class JSF31KochFractalFX extends Application {
 
     public void requestDrawEdges() {
         Platform.runLater(new Runnable() {
-            @Override
             public synchronized void run() {
                 kochManager.drawEdges();
-                kochManager.count = 0;
             }
         });
     }
@@ -242,7 +242,6 @@ public class JSF31KochFractalFX extends Application {
             labelLevel.setText("Level: " + currentLevel);
             kochManager.changeLevel(currentLevel);
         }
-        requestDrawEdges();
     }
 
     private void decreaseLevelButtonActionPerformed(ActionEvent event) {
@@ -252,7 +251,6 @@ public class JSF31KochFractalFX extends Application {
             labelLevel.setText("Level: " + currentLevel);
             kochManager.changeLevel(currentLevel);
         }
-        requestDrawEdges();
     }
 
     private void fitFractalButtonActionPerformed(ActionEvent event) {

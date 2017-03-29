@@ -7,6 +7,8 @@ package calculate;
 
 import java.util.*;
 
+import com.sun.media.jfxmediaimpl.platform.Platform;
+
 /**
  *
  * @author arnoudbevers
@@ -14,38 +16,40 @@ import java.util.*;
 public class KochRunnable implements Runnable, Observer {
 
     private KochManager manager;
-    private KochFractal kochFractal;
     private int edge;
     
-    public KochRunnable(KochManager manager, KochFractal kochFractal, int edge){
+    public KochRunnable(KochManager manager, int edge){
         this.manager = manager;
-        this.kochFractal = kochFractal;
         this.edge = edge;
     }
     
     @Override
     public void run() {
         switch(edge){
+            case 0:
+            	manager.kffx.fractal.generateLeftEdge();
+                break;
             case 1:
-                kochFractal.generateBottomEdge();
+            	manager.kffx.fractal.generateBottomEdge();
                 break;
             case 2:
-                kochFractal.generateLeftEdge();
+            	manager.kffx.fractal.generateRightEdge();
                 break;
             case 3:
-                kochFractal.generateRightEdge();
-                break;
+            	manager.kffx.fractal.generateLeftEdge();
+            	manager.kffx.fractal.generateBottomEdge();
+            	manager.kffx.fractal.generateRightEdge();
+            	break;
         }
-        manager.count++;
-        
+        manager.updateCount();
     }
 
     @Override
     public void update(Observable o, Object arg) {
         Edge e = (Edge) arg;
-        manager.edges.add(e);
-        System.out.println(e.color);
-        manager.kffx.setTextNrEdges(kochFractal.getNrOfEdges() + "");
+        //System.out.println(edge + " " + e.color);
+    	manager.addEdge(e);
+    	manager.kffx.setTextNrEdges(manager.kffx.fractal.getNrOfEdges() + "");
     }
     
 }
