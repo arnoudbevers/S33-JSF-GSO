@@ -36,6 +36,14 @@ public class ContactTest {
         Appointment a2 = new Appointment("Afspraak 2", new TimeSpan(bt2, et2));
         contact.addAppointment(a2);
     }
+    
+    
+    @Test(expected = IllegalArgumentException.class)
+    public void TestFailedAddAppointmentNull(){
+        Appointment a1 = null;
+        contact.addAppointment(a1);
+    }
+    
     @Test
     public void TestFailedAddAppointment(){
         Time bt1 = new Time(2017, 04, 22, 16, 30);
@@ -49,9 +57,32 @@ public class ContactTest {
         assertEquals(contact.addAppointment(a2), false);
     }
     
+    
     @Test(expected = IllegalArgumentException.class)
-    public void TestFailedAddAppointmentNull(){
+    public void TestFailedRemoveAppointmentNull(){
         Appointment a1 = null;
+        contact.removeAppointment(a1);
+    }
+    
+    @Test
+    public void TestFailedRemoveAppointmentNotExists(){
+        Time bt1 = new Time(2017, 04, 22, 16, 30);
+        Time et1 = new Time(2017, 04, 22, 17, 00);
+        Time bt2 = new Time(2017, 04, 22, 16, 35);
+        Time et2 = new Time(2017, 05, 22, 17, 20); 
+        Appointment a1 = new Appointment("Afspraak 1", new TimeSpan(bt1, et1));
+        contact.removeAppointment(a1); 
+        assertEquals(contact.removeAppointment(a1), false);
+    }
+    
+    @Test
+    public void TestSuccesfulRemoveAppointment(){
+        Time bt1 = new Time(2017, 04, 22, 16, 30);
+        Time et1 = new Time(2017, 04, 22, 17, 00);
+        Time bt2 = new Time(2017, 04, 22, 16, 35);
+        Time et2 = new Time(2017, 05, 22, 17, 20); 
+        Appointment a1 = new Appointment("Afspraak 1", new TimeSpan(bt1, et1));
         contact.addAppointment(a1);
+        contact.removeAppointment(a1);
     }
 }
