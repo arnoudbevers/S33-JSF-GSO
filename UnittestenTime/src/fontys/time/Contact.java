@@ -5,11 +5,7 @@
  */
 package fontys.time;
 
-<<<<<<< HEAD
-import java.util.List;
-=======
 import java.util.*;
->>>>>>> refs/remotes/origin/master
 
 /**
  *
