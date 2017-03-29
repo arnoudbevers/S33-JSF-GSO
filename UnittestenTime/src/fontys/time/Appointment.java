@@ -46,7 +46,8 @@ public class Appointment {
 	 */
 	public boolean addContact(Contact c) {
 		boolean noConflict = true;
-		for(Appointment a : c.appointments) {
+		while(c.appointments().hasNext()) {
+			Appointment a = c.appointments.next();
 			noConflict = a.getTimeSpan().intersectionWith(getTimeSpan()) != null;
 			if(!noConflict) break;
 		}
