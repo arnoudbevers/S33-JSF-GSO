@@ -10,8 +10,9 @@ import java.util.Iterator;
 import java.util.List;
 
 /**
+ * 
+ * @author bramhoven
  *
- * @author bramkut
  */
 public class Appointment {
     
@@ -52,12 +53,10 @@ public class Appointment {
 			throw new IllegalArgumentException("Contact cannot be null");
 		}
 		boolean noConflict = true;
-
 		Iterator<Appointment> it = c.appointments();
 		while(it.hasNext()) {
 			Appointment a = it.next();
 			noConflict = a.getTimeSpan().intersectionWith(getTimeSpan()) == null;
-
 			if(!noConflict) break;
 		}
 		if(noConflict) {
