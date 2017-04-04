@@ -4,6 +4,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 
 import javafx.application.Platform;
 import jsf31kochfractalfx.JSF31KochFractalFX;
@@ -14,21 +18,26 @@ public class KochManager {
 	public JSF31KochFractalFX kffx;
 	private TimeStamp tsCalc;
 	private TimeStamp tsDraw;
-    // Volatile = thread-safe
 	private volatile List<Edge> edges;
     public int count=0;
-	
+	public ExecutorService pool;
+	private List<Future<List<Edge>>> futures;
+    
 	public KochManager(JSF31KochFractalFX kffx) {
 		this.kffx = kffx;
 		this.tsCalc = new TimeStamp();
 		this.tsDraw = new TimeStamp();
 		this.edges = new ArrayList<Edge>();
+		this.pool = Executors.newFixedThreadPool(4);
+		this.futures = new ArrayList<>();
 	}
 	
-	public synchronized void addEdge(Edge e) {
-		if(e != null) {
-			if(!edges.contains(e)) {
-				edges.add(e);
+	public synchronized void addEdges(List<Edge> es) {
+		for(Edge e : es) {
+			if(e != null) {
+				if(!edges.contains(e)) {
+					edges.add(e);
+				}
 			}
 		}
 	}
@@ -44,21 +53,38 @@ public class KochManager {
 		
 		kffx.fractal.setLevel(level);
         edges.clear();
-        count = 0;
+        
         for(int i = 0; i < 3; i++) {
-            KochRunnable run = new KochRunnable(this, i);
-            kffx.fractal.addObserver(run);
-            Thread t = new Thread(run);
-            t.start();
+            KochRunnable run = new KochRunnable(this, kffx.fractal, i);
+            Future<List<Edge>> fut = pool.submit(run);
+            futures.add(fut);
         }
-//        KochRunnable run = new KochRunnable(this, 3);
-//        kffx.fractal.addObserver(run);
-//        Thread t = new Thread(run);
-//        t.start();
+        
+        pool.execute(new Runnable() {
+			public void run() {
+				for(Future<List<Edge>> fut : futures) {
+		        	try {
+		        		addEdges(fut.get());
+					} catch (InterruptedException e) {
+						e.printStackTrace();
+					} catch (ExecutionException e) {
+						e.printStackTrace();
+					}
+		        }
+		        
+		        futures.clear();
+		        
+		        tsCalc.setEnd("End calculating fractals");
+				kffx.setTextCalc(tsCalc.toString());
+		        
+		        kffx.requestDrawEdges();
+			}
+        	
+        });
 	}
 	
 	public void drawEdges() {
-		this.kffx.clearKochPanel();
+		kffx.clearKochPanel();
 		
 		tsDraw.init();
 		tsDraw.setBegin("Begin drawing fractals");
@@ -71,19 +97,5 @@ public class KochManager {
 		
 		tsDraw.setEnd("End drawing fractals");
 		kffx.setTextDraw(tsDraw.toString());
-	}
-	
-	public void updateCount() {
-		count++;
-		if(count == 3) {
-			kffx.requestDrawEdges();
-			
-			Platform.runLater(new Runnable() {
-				public void run() {
-					tsCalc.setEnd("End calculating fractals");
-					kffx.setTextCalc(tsCalc.toString());
-				}
-			});
-		}
 	}
 }

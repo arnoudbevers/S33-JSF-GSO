@@ -181,6 +181,10 @@ public class JSF31KochFractalFX extends Application {
         primaryStage.show();
     }
 
+    public void stop() {
+    	kochManager.pool.shutdown();
+    }
+    
     public void clearKochPanel() {
         GraphicsContext gc = kochPanel.getGraphicsContext2D();
         gc.clearRect(0.0, 0.0, kpWidth, kpHeight);
@@ -220,11 +224,19 @@ public class JSF31KochFractalFX extends Application {
     }
 
     public void setTextCalc(String text) {
-        labelCalcText.setText(text);
+    	Platform.runLater(new Runnable() {
+			public void run() {				
+				labelCalcText.setText(text);
+			}
+    	});
     }
 
     public void setTextDraw(String text) {
-        labelDrawText.setText(text);
+    	Platform.runLater(new Runnable() {
+			public void run() {				
+				labelDrawText.setText(text);
+			}
+    	});
     }
 
     public void requestDrawEdges() {
