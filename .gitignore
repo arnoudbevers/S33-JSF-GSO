@@ -1,1 +1,5 @@
-/JSF31KochFractalFX - startup (tm 6)/dist/
+*/dist/
+*/nbproject/
+*/nbbuild/
+*/.jacocoverage/*
+*/build.xml
