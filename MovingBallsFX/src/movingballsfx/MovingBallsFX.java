@@ -34,6 +34,8 @@ public class MovingBallsFX extends Application {
     private int minCsX = (maxX + minX) / 2 - 100;
     private int maxCsX = (maxX + minX) / 2 + 100;
 
+    private Monitor monitor;
+    
     @Override
     public void start(Stage primaryStage) {
        
@@ -97,6 +99,9 @@ public class MovingBallsFX extends Application {
         primaryStage.setScene(scene);
         primaryStage.show();
         
+        monitor = new Monitor71();
+        //monitor = new Monitor72();
+        
         // Start thread to draw each 20 ms
         threadDraw = new Thread(new DrawRunnable());
         threadDraw.start();
@@ -109,7 +114,7 @@ public class MovingBallsFX extends Application {
             // Reader selected: new red ball
             Ball b = new Ball(minX, maxX, minCsX, maxCsX, y, Color.RED);
             ballArray[index] = b;
-            Thread t = new Thread(new BallRunnable(b));
+            Thread t = new Thread(new BallRunnable(b, monitor));
             threadArray[index] = t;
             circleArray[index].setVisible(true);
             t.start();
@@ -117,7 +122,7 @@ public class MovingBallsFX extends Application {
             // Writer selected: new blue ball
             Ball b = new Ball(minX, maxX, minCsX, maxCsX, y, Color.BLUE);
             ballArray[index] = b;
-            Thread t = new Thread(new BallRunnable(b));
+            Thread t = new Thread(new BallRunnable(b, monitor));
             threadArray[index] = t;
             circleArray[index].setVisible(true);
             t.start();
