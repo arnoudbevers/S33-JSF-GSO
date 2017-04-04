@@ -1,5 +1,7 @@
 package movingballsfx;
 
+import javafx.scene.paint.Color;
+
 public class Monitor72 extends Monitor {	
 	@Override
 	public void enterReader() throws InterruptedException {
@@ -56,5 +58,10 @@ public class Monitor72 extends Monitor {
 			monLock.unlock();
 		}
 	}
+
+    @Override
+    public synchronized void remove(int state, Color ballColor) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
 
 }
