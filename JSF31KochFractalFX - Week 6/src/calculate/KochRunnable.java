@@ -22,11 +22,11 @@ public class KochRunnable implements Observer, Callable<List<Edge>> {
     private List<Edge> edges;
     private KochFractal f;
     
-    public KochRunnable(KochManager manager, KochFractal f, int edge){
+    public KochRunnable(KochManager manager, int edge, int level){
         this.manager = manager;
         this.edge = edge;
         this.f = new KochFractal();
-        this.f.setLevel(f.getLevel());
+        this.f.setLevel(level);
         this.f.addObserver(this);
         this.edges = new ArrayList<Edge>();
     }
@@ -53,8 +53,6 @@ public class KochRunnable implements Observer, Callable<List<Edge>> {
 	        	f.generateRightEdge();
 	        	break;
 	    }
-	    
-		//while(edges.size() != f.getNrOfEdges() / 3) {}
 		
 		return edges;
 	}

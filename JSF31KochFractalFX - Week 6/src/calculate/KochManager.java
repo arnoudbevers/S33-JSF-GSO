@@ -34,11 +34,7 @@ public class KochManager {
 	
 	public synchronized void addEdges(List<Edge> es) {
 		for(Edge e : es) {
-			if(e != null) {
-				if(!edges.contains(e)) {
-					edges.add(e);
-				}
-			}
+			edges.add(e);
 		}
 	}
 	
@@ -50,12 +46,9 @@ public class KochManager {
 		
 		kffx.setTextCalc("Calculating...");
 		kffx.setTextDraw("Waiting for calculation...");
-		
-		kffx.fractal.setLevel(level);
-        edges.clear();
         
         for(int i = 0; i < 3; i++) {
-            KochRunnable run = new KochRunnable(this, kffx.fractal, i);
+            KochRunnable run = new KochRunnable(this, i, level);
             Future<List<Edge>> fut = pool.submit(run);
             futures.add(fut);
         }
