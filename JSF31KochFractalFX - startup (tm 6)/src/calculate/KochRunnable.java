@@ -5,58 +5,51 @@
  */
 package calculate;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Observable;
-import java.util.Observer;
-import java.util.concurrent.Callable;
+import java.util.*;
+
+import com.sun.media.jfxmediaimpl.platform.Platform;
 
 /**
  *
  * @author arnoudbevers
  */
-public class KochRunnable implements Observer, Callable<List<Edge>> {
+public class KochRunnable implements Runnable, Observer {
 
     private KochManager manager;
     private int edge;
-    private List<Edge> edges;
-    private KochFractal f;
     
-    public KochRunnable(KochManager manager, KochFractal f, int edge){
+    public KochRunnable(KochManager manager, int edge){
         this.manager = manager;
         this.edge = edge;
-        this.f = new KochFractal();
-        this.f.setLevel(f.getLevel());
-        this.f.addObserver(this);
-        this.edges = new ArrayList<Edge>();
+    }
+    
+    @Override
+    public void run() {
+        switch(edge){
+            case 0:
+            	manager.kffx.fractal.generateLeftEdge();
+                break;
+            case 1:
+            	manager.kffx.fractal.generateBottomEdge();
+                break;
+            case 2:
+            	manager.kffx.fractal.generateRightEdge();
+                break;
+            case 3:
+            	manager.kffx.fractal.generateLeftEdge();
+            	manager.kffx.fractal.generateBottomEdge();
+            	manager.kffx.fractal.generateRightEdge();
+            	break;
+        }
+        manager.updateCount();
     }
 
+    @Override
     public void update(Observable o, Object arg) {
         Edge e = (Edge) arg;
-        edges.add(e);
+        //System.out.println(edge + " " + e.color);
+    	manager.addEdge(e);
+    	manager.kffx.setTextNrEdges(manager.kffx.fractal.getNrOfEdges() + "");
     }
-
-	public List<Edge> call() throws Exception {
-		switch(edge){
-	        case 0:
-	        	f.generateLeftEdge();
-	            break;
-	        case 1:
-	        	f.generateBottomEdge();
-	            break;
-	        case 2:
-	        	f.generateRightEdge();
-	            break;
-	        case 3:
-	        	f.generateLeftEdge();
-	        	f.generateBottomEdge();
-	        	f.generateRightEdge();
-	        	break;
-	    }
-	    
-		//while(edges.size() != f.getNrOfEdges() / 3) {}
-		
-		return edges;
-	}
     
 }
