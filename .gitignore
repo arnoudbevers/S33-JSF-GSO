@@ -3,3 +3,4 @@
 */nbbuild/
 */.jacocoverage/*
 */build.xml
+/AEXBanner/build/
