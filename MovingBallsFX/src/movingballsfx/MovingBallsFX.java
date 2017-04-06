@@ -99,8 +99,8 @@ public class MovingBallsFX extends Application {
         primaryStage.setScene(scene);
         primaryStage.show();
         
-        monitor = new Monitor71();
-        //monitor = new Monitor72();
+        //monitor = new Monitor71();
+        monitor = new Monitor72();
         
         // Start thread to draw each 20 ms
         threadDraw = new Thread(new DrawRunnable());

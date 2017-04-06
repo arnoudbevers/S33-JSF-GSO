@@ -3,14 +3,12 @@ package movingballsfx;
 import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
-import javafx.scene.paint.Color;
 
 public abstract class Monitor {
-	protected int readersActive;
-	protected int readersWaiting;
-	protected int writersActive;
-	protected int writersWaiting;
-        protected int state = 1;
+	public int readersActive;
+	public int readersWaiting;
+	public int writersActive;
+	public int writersWaiting;
 	
 	protected Lock monLock = new ReentrantLock();
 	protected Condition okToRead = monLock.newCondition();
@@ -20,6 +18,4 @@ public abstract class Monitor {
 	public abstract void exitReader();
 	public abstract void enterWriter() throws InterruptedException;
 	public abstract void exitWriter();
-        
-        public synchronized void remove(int state, Color ballColor){}
 }

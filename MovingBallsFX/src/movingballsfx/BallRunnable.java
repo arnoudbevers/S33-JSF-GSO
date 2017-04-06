@@ -1,4 +1,5 @@
 /*
+
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
@@ -43,7 +44,16 @@ public class BallRunnable implements Runnable {
                 Thread.sleep(ball.getSpeed());
                 
             } catch (InterruptedException ex) {
-            	mon.remove(state, ball.getColor());
+            	switch(state) {
+            	case 2:
+            		if(ball.getColor() == Color.RED) mon.readersWaiting--;
+            		else mon.writersWaiting--;
+            		break;
+            	case 3:
+            		if(ball.getColor() == Color.RED) mon.readersActive--;
+            		else mon.writersActive--;
+            		break;
+            	}
             			
                 Thread.currentThread().interrupt();
             }
