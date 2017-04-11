@@ -44,17 +44,7 @@ public class BallRunnable implements Runnable {
                 Thread.sleep(ball.getSpeed());
                 
             } catch (InterruptedException ex) {
-            	switch(state) {
-            	case 2:
-            		if(ball.getColor() == Color.RED) mon.readersWaiting--;
-            		else mon.writersWaiting--;
-            		break;
-            	case 3:
-            		if(ball.getColor() == Color.RED) mon.readersActive--;
-            		else mon.writersActive--;
-            		break;
-            	}
-            			
+            	mon.ballInterrupted(state, ball.getColor());            			
                 Thread.currentThread().interrupt();
             }
         }

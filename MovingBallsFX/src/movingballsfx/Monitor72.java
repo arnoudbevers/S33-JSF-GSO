@@ -1,5 +1,7 @@
 package movingballsfx;
 
+import javafx.scene.paint.Color;
+
 public class Monitor72 extends Monitor {	
 	@Override
 	public void enterReader() throws InterruptedException {
@@ -57,4 +59,35 @@ public class Monitor72 extends Monitor {
 		}
 	}
 
+	@Override
+	public void ballInterrupted(int state, Color color) {
+		monLock.lock();
+		switch(state) {
+    	case 2:
+    		if(color == Color.RED) {
+    			readersWaiting--;
+    		} else {
+    			writersWaiting--;
+    		}
+    		break;
+    	case 3:
+    		if(color == Color.RED) {
+    			readersActive--;
+    			if(readersActive == 0 && writersWaiting > 0) {
+    				okToWrite.signal();
+    			} else {
+    				okToRead.signalAll();
+    			}
+    		} else {
+    			writersActive--;
+    			if(writersWaiting > 0 && readersActive == 0) {
+    				okToWrite.signal();
+    			} else {
+    				okToRead.signalAll();
+    			}
+    		}
+    		break;
+    	}
+		monLock.unlock();
+	}
 }

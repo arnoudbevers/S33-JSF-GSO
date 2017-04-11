@@ -4,6 +4,8 @@ import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
+import javafx.scene.paint.Color;
+
 public abstract class Monitor {
 	public int readersActive;
 	public int readersWaiting;
@@ -18,4 +20,6 @@ public abstract class Monitor {
 	public abstract void exitReader();
 	public abstract void enterWriter() throws InterruptedException;
 	public abstract void exitWriter();
+	
+	public abstract void ballInterrupted(int state, Color color);
 }
