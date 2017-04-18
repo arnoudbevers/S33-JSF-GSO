@@ -2,6 +2,8 @@ package aexbanner.fondsen;
 
 public class ING implements IFonds{
 
+	private double koers;
+	
 	@Override
 	public String getNaam() {
 		return "ING";
@@ -9,7 +11,13 @@ public class ING implements IFonds{
 
 	@Override
 	public double getKoers() {
-		return (double)(Math.random()*20.00 + 50);
+		return koers;
 	}
-
+	
+	public void setKoers(double modifierDouble){
+        if (koers + modifierDouble < 0) {
+            koers += (modifierDouble * -1);
+        }
+        koers += modifierDouble;
+    }
 }

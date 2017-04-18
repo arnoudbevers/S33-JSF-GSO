@@ -1,6 +1,9 @@
 package aexbanner;
 
+import java.beans.PropertyChangeEvent;
 import java.rmi.RemoteException;
+import java.rmi.server.UnicastRemoteObject;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -12,13 +15,15 @@ import aexbanner.rmi.RMIClient;
  *
  * @author arnoudbevers
  */
-public class BannerController {
+public class BannerController extends UnicastRemoteObject implements IBanner {
 	private AEXBanner banner;
     private IEffectenBeurs effectenbeurs;
+    private List<IFonds> koersen;
     private Timer pollingTimer;
     private RMIClient client;
 	
-	public BannerController(AEXBanner banner) {
+	public BannerController(AEXBanner banner) throws RemoteException {
+		super();
         this.banner = banner;
         this.client = new RMIClient("localhost", 5081, this);
         try {
@@ -29,16 +34,13 @@ public class BannerController {
         pollingTimer = new Timer();
         pollingTimer.scheduleAtFixedRate(new TimerTask() {
 			public void run() {
-				try {
-					String display = "";
-					List<IFonds> koersen = client.getEffectenbeurs().getKoersen();
+				String display = "";
+				if(koersen != null) {
 					for(IFonds f : koersen) {
 						display += f.getNaam() + ": " + ((int) (f.getKoers())) + " ";
 					}
-					banner.setKoersen(display);
-				} catch(RemoteException e) {
-					
 				}
+				banner.setKoersen(display);
 			}
         }, 0, 1000);
     }
@@ -54,4 +56,14 @@ public class BannerController {
     public IEffectenBeurs getEffectenBeurs() {
     	return effectenbeurs;
     }
+
+	@Override
+	public void propertyChange(PropertyChangeEvent evt) throws RemoteException {
+		setKoersen((List<IFonds>) evt.getNewValue());
+	}
+
+	@Override
+	public void setKoersen(List<IFonds> fondsen) throws RemoteException {
+		koersen = fondsen;
+	}
 }

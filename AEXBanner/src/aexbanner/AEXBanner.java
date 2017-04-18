@@ -1,5 +1,7 @@
 package aexbanner;
 
+import java.rmi.RemoteException;
+
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
 import javafx.scene.Scene;
@@ -89,7 +91,11 @@ public class AEXBanner extends Application {
         };
         animationTimer.start();
         
-        controller = new BannerController(this);
+        try {
+			controller = new BannerController(this);
+		} catch (RemoteException e) {
+			e.printStackTrace();
+		}
     }
 
     public void setKoersen(String koersen) {

@@ -53,6 +53,7 @@ public class RMIClient {
 					try {
 						effectenbeurs = (IEffectenBeurs) registry.lookup(bindingName);
 						bannerController.setEffectenBeurs(effectenbeurs);
+						effectenbeurs.addListener(bannerController, "koersen");
 						//System.out.println("Client: Effectenbeurs bound");
 					} catch (RemoteException ex) {
 						System.out.println("Client: Cannot bind effectenbeurs");
