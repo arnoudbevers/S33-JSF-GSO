@@ -17,28 +17,33 @@ public class KochRunnable implements Runnable, Observer {
 
     private KochManager manager;
     private int edge;
+    private KochFractal fractal;
+    private int level;
     
-    public KochRunnable(KochManager manager, int edge){
+    public KochRunnable(KochManager manager, int edge, int level){
         this.manager = manager;
         this.edge = edge;
+        this.fractal = new KochFractal();
+        this.fractal.setLevel(level);
+        this.fractal.addObserver(this);
     }
     
     @Override
     public void run() {
         switch(edge){
             case 0:
-            	manager.kffx.fractal.generateLeftEdge();
+            	this.fractal.generateLeftEdge();
                 break;
             case 1:
-            	manager.kffx.fractal.generateBottomEdge();
+            	this.fractal.generateBottomEdge();
                 break;
             case 2:
-            	manager.kffx.fractal.generateRightEdge();
+            	this.fractal.generateRightEdge();
                 break;
             case 3:
-            	manager.kffx.fractal.generateLeftEdge();
-            	manager.kffx.fractal.generateBottomEdge();
-            	manager.kffx.fractal.generateRightEdge();
+            	this.fractal.generateLeftEdge();
+            	this.fractal.generateBottomEdge();
+            	this.fractal.generateRightEdge();
             	break;
         }
         manager.updateCount();
@@ -49,7 +54,7 @@ public class KochRunnable implements Runnable, Observer {
         Edge e = (Edge) arg;
         //System.out.println(edge + " " + e.color);
     	manager.addEdge(e);
-    	manager.kffx.setTextNrEdges(manager.kffx.fractal.getNrOfEdges() + "");
+    	//manager.kffx.setTextNrEdges(manager.kffx.fractal.getNrOfEdges() + "");
     }
     
 }

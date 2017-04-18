@@ -12,17 +12,16 @@ import java.util.Observer;
 import java.util.concurrent.Callable;
 
 /**
- *
  * @author arnoudbevers
  */
-public class KochRunnable implements Observer, Callable<List<Edge>> {
+public class KochCallable implements Observer, Callable<List<Edge>> {
 
     private KochManager manager;
     private int edge;
     private List<Edge> edges;
     private KochFractal f;
     
-    public KochRunnable(KochManager manager, int edge, int level){
+    public KochCallable(KochManager manager, int edge, int level){
         this.manager = manager;
         this.edge = edge;
         this.f = new KochFractal();

@@ -48,7 +48,7 @@ public class KochManager {
 		kffx.setTextDraw("Waiting for calculation...");
         
         for(int i = 0; i < 3; i++) {
-            KochRunnable run = new KochRunnable(this, i, level);
+            KochCallable run = new KochCallable(this, i, level);
             Future<List<Edge>> fut = pool.submit(run);
             futures.add(fut);
         }

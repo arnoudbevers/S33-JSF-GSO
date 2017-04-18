@@ -7,10 +7,10 @@ import java.util.concurrent.locks.ReentrantLock;
 import javafx.scene.paint.Color;
 
 public abstract class Monitor {
-	public int readersActive;
-	public int readersWaiting;
-	public int writersActive;
-	public int writersWaiting;
+	protected int readersActive;
+	protected int readersWaiting;
+	protected int writersActive;
+	protected int writersWaiting;
 	
 	protected Lock monLock = new ReentrantLock();
 	protected Condition okToRead = monLock.newCondition();

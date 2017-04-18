@@ -61,7 +61,7 @@ public class JSF31KochFractalFX extends Application {
     private final int kpWidth = 500;
     private final int kpHeight = 500;
 
-    public KochFractal fractal;
+    //public KochFractal fractal;
 
     @Override
     public void start(Stage primaryStage) {
@@ -167,7 +167,7 @@ public class JSF31KochFractalFX extends Application {
 
         kochManager = new KochManager(this);
 
-        fractal = new KochFractal();
+        //fractal = new KochFractal();
         kochManager.changeLevel(currentLevel);
 
         // Create the scene and add the grid pane
