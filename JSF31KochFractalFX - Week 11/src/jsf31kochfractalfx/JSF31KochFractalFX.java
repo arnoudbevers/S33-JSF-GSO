@@ -21,6 +21,7 @@ import javafx.scene.canvas.*;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ProgressBar;
+import javafx.scene.control.ProgressIndicator;
 import javafx.scene.input.*;
 import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
@@ -78,7 +79,7 @@ public class JSF31KochFractalFX extends Application {
 
         // For debug purposes
         // Make the grid lines visible
-        grid.setGridLinesVisible(true);
+        // grid.setGridLinesVisible(true);
         // Drawing panel for Koch fractal
         kochPanel = new Canvas(kpWidth, kpHeight);
         grid.add(kochPanel, 0, 3, 25, 1);
@@ -138,6 +139,21 @@ public class JSF31KochFractalFX extends Application {
         });
         grid.add(buttonFitFractal, 14, 6);
 
+        Label labelLeft = new Label("Progress Left: ");
+        pbLeft = new ProgressBar(-1.0f);
+        grid.add(labelLeft, 3, 7);
+        grid.add(pbLeft, 5, 7);
+        
+        Label labelRight = new Label("Progress Right: ");
+        pbRight = new ProgressBar(-1.0f);
+        grid.add(labelRight, 3, 8);
+        grid.add(pbRight, 5, 8);
+        
+        Label labelBottom = new Label("Progress Bottom: ");
+        pbBottom = new ProgressBar(-1.0f);
+        grid.add(labelBottom, 3, 9);
+        grid.add(pbBottom, 5, 9);
+        
         // Add mouse clicked event to Koch panel
         kochPanel.addEventHandler(MouseEvent.MOUSE_CLICKED,
                 new EventHandler<MouseEvent>() {
