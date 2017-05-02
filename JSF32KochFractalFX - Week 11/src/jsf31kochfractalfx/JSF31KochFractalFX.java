@@ -140,18 +140,18 @@ public class JSF31KochFractalFX extends Application {
 
 		Label labelLeft = new Label("Progress Left: ");
 		pbLeft = new ProgressBar(-1.0f);
-		grid.add(labelLeft, 22, 1);
-		grid.add(pbLeft, 23, 1);
+		grid.add(labelLeft, 22, 0);
+		grid.add(pbLeft, 23, 0);
 
 		Label labelRight = new Label("Progress Right: ");
 		pbRight = new ProgressBar(-1.0f);
-		grid.add(labelRight, 22, 2);
-		grid.add(pbRight, 23, 2);
+		grid.add(labelRight, 22, 1);
+		grid.add(pbRight, 23, 1);
 
 		Label labelBottom = new Label("Progress Bottom: ");
 		pbBottom = new ProgressBar(-1.0f);
-		grid.add(labelBottom, 22, 3);
-		grid.add(pbBottom, 23, 3);
+		grid.add(labelBottom, 22, 2);
+		grid.add(pbBottom, 23, 2);
 
 		// Add mouse clicked event to Koch panel
 		kochPanel.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {

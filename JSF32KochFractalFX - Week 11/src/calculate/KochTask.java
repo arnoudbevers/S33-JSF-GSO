@@ -10,7 +10,10 @@ import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
 import java.util.concurrent.Callable;
+
+import javafx.application.Platform;
 import javafx.concurrent.Task;
+import javafx.scene.paint.Color;
 
 /**
  * @author arnoudbevers
@@ -40,6 +43,17 @@ public class KochTask extends Task<List<Edge>> implements Observer {
 		} catch (InterruptedException e1) {
 			e1.printStackTrace();
 		}
+        
+        
+        Platform.runLater(new Runnable() {
+			@Override
+			public void run() {
+				Edge tmp = new Edge(e.X1, e.Y1, e.X2, e.Y2, Color.WHITE);
+		        manager.kffx.drawEdge(tmp);
+			}
+        });
+        
+        
         updateProgress(edges.size(), f.getNrOfEdges()/3);
     }
 
