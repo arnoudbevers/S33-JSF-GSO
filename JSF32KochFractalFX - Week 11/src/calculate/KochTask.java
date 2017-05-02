@@ -21,6 +21,7 @@ public class KochTask extends Task<List<Edge>> implements Observer {
     private int edge;
     private List<Edge> edges;
     private KochFractal f;
+    private int sleep = 10;
 
     public KochTask(KochManager manager, int edge, int level) {
         this.manager = manager;
@@ -34,7 +35,12 @@ public class KochTask extends Task<List<Edge>> implements Observer {
     public void update(Observable o, Object arg) {
         Edge e = (Edge) arg;
         edges.add(e);
-        updateProgress(edge, 3);
+        try {
+			Thread.sleep(sleep);
+		} catch (InterruptedException e1) {
+			e1.printStackTrace();
+		}
+        updateProgress(edges.size(), f.getNrOfEdges()/3);
     }
 
     public List<Edge> call() throws Exception {

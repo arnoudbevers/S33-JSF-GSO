@@ -78,7 +78,7 @@ public class JSF31KochFractalFX extends Application {
 
 		// For debug purposes
 		// Make the grid lines visible
-		grid.setGridLinesVisible(true);
+		// grid.setGridLinesVisible(true);
 		// Drawing panel for Koch fractal
 		kochPanel = new Canvas(kpWidth, kpHeight);
 		grid.add(kochPanel, 0, 3, 25, 1);
@@ -140,18 +140,18 @@ public class JSF31KochFractalFX extends Application {
 
 		Label labelLeft = new Label("Progress Left: ");
 		pbLeft = new ProgressBar(-1.0f);
-		grid.add(labelLeft, 3, 7);
-		grid.add(pbLeft, 5, 7);
+		grid.add(labelLeft, 22, 1);
+		grid.add(pbLeft, 23, 1);
 
 		Label labelRight = new Label("Progress Right: ");
 		pbRight = new ProgressBar(-1.0f);
-		grid.add(labelRight, 3, 8);
-		grid.add(pbRight, 5, 8);
+		grid.add(labelRight, 22, 2);
+		grid.add(pbRight, 23, 2);
 
 		Label labelBottom = new Label("Progress Bottom: ");
 		pbBottom = new ProgressBar(-1.0f);
-		grid.add(labelBottom, 3, 9);
-		grid.add(pbBottom, 5, 9);
+		grid.add(labelBottom, 22, 3);
+		grid.add(pbBottom, 23, 3);
 
 		// Add mouse clicked event to Koch panel
 		kochPanel.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {

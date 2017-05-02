@@ -10,6 +10,10 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 
 import javafx.application.Platform;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
+import javafx.concurrent.WorkerStateEvent;
+import javafx.event.EventHandler;
 import jsf31kochfractalfx.JSF31KochFractalFX;
 import timeutil.TimeStamp;
 
@@ -21,7 +25,7 @@ public class KochManager {
     private volatile List<Edge> edges;
     public int count = 0;
     public ExecutorService pool;
-    private List<Future<List<Edge>>> futures;
+    private int num = 0;
 
     public KochManager(JSF31KochFractalFX kffx) {
         this.kffx = kffx;
@@ -29,7 +33,6 @@ public class KochManager {
         this.tsDraw = new TimeStamp();
         this.edges = new ArrayList<Edge>();
         this.pool = Executors.newFixedThreadPool(4);
-        this.futures = new ArrayList<>();
     }
 
     public synchronized void addEdges(List<Edge> es) {
@@ -37,7 +40,7 @@ public class KochManager {
             edges.add(e);
         }
     }
-
+    
     public void changeLevel(int level) {
         edges.clear();
 
@@ -46,11 +49,14 @@ public class KochManager {
 
         kffx.setTextCalc("Calculating...");
         kffx.setTextDraw("Waiting for calculation...");
-
+        
+        List<KochTask> tasks = new ArrayList<KochTask>();
+        
+        num = 0;
+        
         for (int i = 0; i < 3; i++) {
             KochTask run = new KochTask(this, i, level);
-            //Future<List<Edge>> fut = pool.submit(run);
-            //futures.add(fut);
+            tasks.add(run);
             switch(i){
                 case 0:
                     //fleff
@@ -68,32 +74,26 @@ public class KochManager {
                     //do nuffinf
                     break;
             }
-            pool.submit(run);
             
+            pool.execute(run);
+            run.setOnSucceeded(new EventHandler<WorkerStateEvent>() {
+				@Override
+				public void handle(WorkerStateEvent event) {
+					if(run.getValue().size() > 0) {
+						addEdges(run.getValue());
+						
+						num++;
+						
+						if(num == 3) {
+							tsCalc.setEnd("End calculating fractals");
+			                kffx.setTextCalc(tsCalc.toString());
+			                kffx.setTextNrEdges(edges.size() + "");
+			                kffx.requestDrawEdges();
+						}
+					}
+				}
+			});
         }
-        
-        pool.execute(new Runnable() {
-            public void run() {
-                for (Future<List<Edge>> fut : futures) {
-                    try {
-                        addEdges(fut.get());
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    } catch (ExecutionException e) {
-                        e.printStackTrace();
-                    }
-                }
-
-                futures.clear();
-                //Set the progressbars
-                
-                tsCalc.setEnd("End calculating fractals");
-                kffx.setTextCalc(tsCalc.toString());
-                kffx.setTextNrEdges(edges.size() + "");
-                kffx.requestDrawEdges();
-            }
-
-        });
     }
 
     public void drawEdges() {
