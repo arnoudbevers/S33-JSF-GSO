@@ -56,7 +56,7 @@ public class JSF31KochFractalFX extends Application {
     private Label labelCalcText;
     private Label labelDraw;
     private Label labelDrawText;
-    
+
     //Task controls
     private ProgressBar pbLeft;
     private ProgressBar pbRight;
@@ -89,7 +89,6 @@ public class JSF31KochFractalFX extends Application {
         grid.add(labelNrEdges, 0, 0, 4, 1);
         grid.add(labelNrEdgesText, 3, 0, 22, 1);
 
-       
         // Labels to present time of calculation for Koch fractal
         labelCalc = new Label("Calculating:");
         labelCalcText = new Label();
@@ -170,7 +169,6 @@ public class JSF31KochFractalFX extends Application {
 //        kochManager = new KochManager(this);
 //        kochManager.changeLevel(currentLevel);
 
-        
         kochManager = new KochManager(this);
 
         kochManager.changeLevel(currentLevel);
@@ -187,9 +185,9 @@ public class JSF31KochFractalFX extends Application {
     }
 
     public void stop() {
-    	kochManager.pool.shutdown();
+        kochManager.pool.shutdown();
     }
-    
+
     public void clearKochPanel() {
         GraphicsContext gc = kochPanel.getGraphicsContext2D();
         gc.clearRect(0.0, 0.0, kpWidth, kpHeight);
@@ -221,29 +219,38 @@ public class JSF31KochFractalFX extends Application {
     }
 
     public void setTextNrEdges(String text) {
-    	Platform.runLater(new Runnable() {
-    		public void run() {
-    			labelNrEdgesText.setText(text);
-    		}
-    	});
+        Platform.runLater(new Runnable() {
+            public void run() {
+                labelNrEdgesText.setText(text);
+            }
+        });
     }
 
     public void setTextCalc(String text) {
-    	Platform.runLater(new Runnable() {
-			public void run() {				
-				labelCalcText.setText(text);
-			}
-    	});
+        Platform.runLater(new Runnable() {
+            public void run() {
+                labelCalcText.setText(text);
+            }
+        });
     }
 
     public void setTextDraw(String text) {
-    	Platform.runLater(new Runnable() {
-			public void run() {				
-				labelDrawText.setText(text);
-			}
-    	});
+        Platform.runLater(new Runnable() {
+            public void run() {
+                labelDrawText.setText(text);
+            }
+        });
     }
 
+    public ProgressBar getProgressbarLeft(){
+        return pbLeft;
+    }
+    public ProgressBar getProgressbarRight(){
+        return pbRight;
+    }
+    public ProgressBar getProgressbarBottom(){
+        return pbBottom;
+    }
     public void requestDrawEdges() {
         Platform.runLater(new Runnable() {
             public synchronized void run() {

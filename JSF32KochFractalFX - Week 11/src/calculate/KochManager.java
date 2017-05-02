@@ -49,8 +49,27 @@ public class KochManager {
 
         for (int i = 0; i < 3; i++) {
             KochTask run = new KochTask(this, i, level);
-            Future<List<Edge>> fut = pool.submit(run);
-            futures.add(fut);
+            //Future<List<Edge>> fut = pool.submit(run);
+            //futures.add(fut);
+            switch(i){
+                case 0:
+                    //fleff
+                    kffx.getProgressbarLeft().progressProperty().bind(run.progressProperty());
+                    break;
+                case 1:
+                    //righff
+                    kffx.getProgressbarRight().progressProperty().bind(run.progressProperty());
+                    break;
+                case 2: 
+                    //boffomf
+                    kffx.getProgressbarBottom().progressProperty().bind(run.progressProperty());
+                    break;
+                case 3:
+                    //do nuffinf
+                    break;
+            }
+            pool.submit(run);
+            
         }
         
         pool.execute(new Runnable() {
@@ -67,6 +86,7 @@ public class KochManager {
 
                 futures.clear();
                 //Set the progressbars
+                
                 tsCalc.setEnd("End calculating fractals");
                 kffx.setTextCalc(tsCalc.toString());
                 kffx.setTextNrEdges(edges.size() + "");

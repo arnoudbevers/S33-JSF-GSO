@@ -34,6 +34,7 @@ public class KochTask extends Task<List<Edge>> implements Observer {
     public void update(Observable o, Object arg) {
         Edge e = (Edge) arg;
         edges.add(e);
+        updateProgress(edge, 3);
     }
 
     public List<Edge> call() throws Exception {
@@ -53,7 +54,6 @@ public class KochTask extends Task<List<Edge>> implements Observer {
                 f.generateRightEdge();
                 break;
         }
-        updateProgress(edge, 3);
         return edges;
     }
 
