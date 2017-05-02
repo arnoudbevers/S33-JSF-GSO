@@ -89,6 +89,7 @@ public class JSF31KochFractalFX extends Application {
         grid.add(labelNrEdges, 0, 0, 4, 1);
         grid.add(labelNrEdgesText, 3, 0, 22, 1);
 
+       
         // Labels to present time of calculation for Koch fractal
         labelCalc = new Label("Calculating:");
         labelCalcText = new Label();
@@ -169,6 +170,7 @@ public class JSF31KochFractalFX extends Application {
 //        kochManager = new KochManager(this);
 //        kochManager.changeLevel(currentLevel);
 
+        
         kochManager = new KochManager(this);
 
         kochManager.changeLevel(currentLevel);

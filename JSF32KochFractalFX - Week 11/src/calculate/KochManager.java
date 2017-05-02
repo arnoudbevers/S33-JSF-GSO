@@ -52,7 +52,7 @@ public class KochManager {
             Future<List<Edge>> fut = pool.submit(run);
             futures.add(fut);
         }
-
+        
         pool.execute(new Runnable() {
             public void run() {
                 for (Future<List<Edge>> fut : futures) {
@@ -66,7 +66,7 @@ public class KochManager {
                 }
 
                 futures.clear();
-
+                //Set the progressbars
                 tsCalc.setEnd("End calculating fractals");
                 kffx.setTextCalc(tsCalc.toString());
                 kffx.setTextNrEdges(edges.size() + "");

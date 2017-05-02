@@ -10,18 +10,19 @@ import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
 import java.util.concurrent.Callable;
+import javafx.concurrent.Task;
 
 /**
  * @author arnoudbevers
  */
-public class KochTask implements Observer, Callable<List<Edge>> {
+public class KochTask extends Task<List<Edge>> implements Observer {
 
     private KochManager manager;
     private int edge;
     private List<Edge> edges;
     private KochFractal f;
-    
-    public KochTask(KochManager manager, int edge, int level){
+
+    public KochTask(KochManager manager, int edge, int level) {
         this.manager = manager;
         this.edge = edge;
         this.f = new KochFractal();
@@ -35,25 +36,25 @@ public class KochTask implements Observer, Callable<List<Edge>> {
         edges.add(e);
     }
 
-	public List<Edge> call() throws Exception {
-		switch(edge){
-	        case 0:
-	        	f.generateLeftEdge();
-	            break;
-	        case 1:
-	        	f.generateBottomEdge();
-	            break;
-	        case 2:
-	        	f.generateRightEdge();
-	            break;
-	        case 3:
-	        	f.generateLeftEdge();
-	        	f.generateBottomEdge();
-	        	f.generateRightEdge();
-	        	break;
-	    }
-		
-		return edges;
-	}
-    
+    public List<Edge> call() throws Exception {
+        switch (edge) {
+            case 0:
+                f.generateLeftEdge();
+                break;
+            case 1:
+                f.generateBottomEdge();
+                break;
+            case 2:
+                f.generateRightEdge();
+                break;
+            case 3:
+                f.generateLeftEdge();
+                f.generateBottomEdge();
+                f.generateRightEdge();
+                break;
+        }
+        updateProgress(edge, 3);
+        return edges;
+    }
+
 }
