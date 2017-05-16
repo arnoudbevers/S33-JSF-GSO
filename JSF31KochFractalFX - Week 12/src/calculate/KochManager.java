@@ -4,16 +4,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
-import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
 
-import javafx.application.Platform;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.concurrent.WorkerStateEvent;
 import javafx.event.EventHandler;
+import javafx.scene.paint.Color;
 import jsf31kochfractalfx.JSF31KochFractalFX;
 import timeutil.TimeStamp;
 
@@ -26,6 +22,7 @@ public class KochManager {
     public int count = 0;
     public ExecutorService pool;
     private int num = 0;
+    private List<KochTask> tasks = new ArrayList<KochTask>();
 
     public KochManager(JSF31KochFractalFX kffx) {
         this.kffx = kffx;
@@ -42,6 +39,9 @@ public class KochManager {
     }
     
     public void changeLevel(int level) {
+    	for(KochTask task : tasks) {
+    		task.cancel(true);
+    	}
         edges.clear();
 
         tsCalc.init();
@@ -49,8 +49,6 @@ public class KochManager {
 
         kffx.setTextCalc("Calculating...");
         kffx.setTextDraw("Waiting for calculation...");
-        
-        List<KochTask> tasks = new ArrayList<KochTask>();
         
         num = 0;
         
@@ -89,6 +87,7 @@ public class KochManager {
 			                kffx.setTextCalc(tsCalc.toString());
 			                kffx.setTextNrEdges(edges.size() + "");
 			                kffx.requestDrawEdges();
+			                tasks.clear();
 						}
 					}
 				}

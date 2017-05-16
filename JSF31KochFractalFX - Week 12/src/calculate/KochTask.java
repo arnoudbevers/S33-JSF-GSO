@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
+import java.util.Random;
 import java.util.concurrent.Callable;
 
 import javafx.application.Platform;
@@ -33,28 +34,30 @@ public class KochTask extends Task<List<Edge>> implements Observer {
         this.f.setLevel(level);
         this.f.addObserver(this);
         this.edges = new ArrayList<Edge>();
+        Random r = new Random();
+        this.sleep = r.nextInt(10);
     }
 
     public void update(Observable o, Object arg) {
-        Edge e = (Edge) arg;
-        edges.add(e);
-        try {
-			Thread.sleep(sleep);
-		} catch (InterruptedException e1) {
-			e1.printStackTrace();
-		}
-        
-        
-        Platform.runLater(new Runnable() {
-			@Override
-			public void run() {
-				Edge tmp = new Edge(e.X1, e.Y1, e.X2, e.Y2, Color.WHITE);
-		        manager.kffx.drawEdge(tmp);
-			}
-        });
-        
-        
-        updateProgress(edges.size(), f.getNrOfEdges()/3);
+    	try {
+	        Edge e = (Edge) arg;
+	        edges.add(e);
+	        Thread.sleep(sleep);
+	        
+	        
+	        Platform.runLater(new Runnable() {
+				@Override
+				public void run() {
+					Edge tmp = new Edge(e.X1, e.Y1, e.X2, e.Y2, Color.WHITE);
+			        manager.kffx.drawEdge(tmp);
+				}
+	        });
+	        
+	        
+	        updateProgress(edges.size(), f.getNrOfEdges()/3);
+    	} catch(InterruptedException e) {
+    		Thread.currentThread().interrupt();
+    	}
     }
 
     public List<Edge> call() throws Exception {
