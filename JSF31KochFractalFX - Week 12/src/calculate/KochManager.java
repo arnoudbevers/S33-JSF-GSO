@@ -54,7 +54,6 @@ public class KochManager {
         
         for (int i = 0; i < 3; i++) {
             KochTask run = new KochTask(this, i, level);
-            tasks.add(run);
             switch(i){
                 case 0:
                     //fleff
@@ -72,6 +71,7 @@ public class KochManager {
                     //do nuffinf
                     break;
             }
+            tasks.add(run);
             
             pool.execute(run);
             run.setOnSucceeded(new EventHandler<WorkerStateEvent>() {
