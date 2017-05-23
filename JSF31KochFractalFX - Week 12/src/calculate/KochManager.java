@@ -1,5 +1,11 @@
 package calculate;
 
+import java.io.BufferedInputStream;
+import java.io.EOFException;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Observable;
@@ -7,6 +13,7 @@ import java.util.Observer;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+import javafx.application.Platform;
 import javafx.concurrent.WorkerStateEvent;
 import javafx.event.EventHandler;
 import javafx.scene.paint.Color;
@@ -32,6 +39,33 @@ public class KochManager {
         this.pool = Executors.newFixedThreadPool(4);
     }
 
+    public void loadFile(String file) {
+    	try {
+			FileInputStream fis = new FileInputStream(file);
+			BufferedInputStream bis = new BufferedInputStream(fis);
+			ObjectInputStream ois = new ObjectInputStream(bis);
+			Object obj;
+			while((obj = ois.readObject()) != null) {
+				Edge e = (Edge) obj;
+				e.convertColor();
+				edges.add(e);
+			}
+		} catch (IOException e) {
+		} catch (ClassNotFoundException e) {
+		}
+		
+    	int amount = edges.size();
+    	int amountEdges = (int) ((Math.log(amount/3)/Math.log(4))+1);
+    	
+		Platform.runLater(new Runnable() {
+			@Override
+			public void run() {
+				kffx.setTextNrEdges(amountEdges + "");
+				drawEdges();
+			}
+		});
+    }
+    
     public synchronized void addEdges(List<Edge> es) {
         for (Edge e : es) {
             edges.add(e);
