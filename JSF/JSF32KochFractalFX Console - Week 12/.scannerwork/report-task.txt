@@ -1,0 +1,5 @@
+projectKey=my:JSF32KochFractalFXConsole-Week12
+serverUrl=http://localhost:9000
+dashboardUrl=http://localhost:9000/dashboard/index/my:JSF32KochFractalFXConsole-Week12
+ceTaskId=AVw1T3GRb714gse2dlm0
+ceTaskUrl=http://localhost:9000/api/ce/task?id=AVw1T3GRb714gse2dlm0
