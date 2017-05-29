@@ -50,7 +50,7 @@ public class KochManager {
             //ObjectInputStream ois = new ObjectInputStream(bis);
             //ObjectInputStream ois = new ObjectInputStream(fis);
             FileReader fr = new FileReader(file);
-            BufferedReader br = new BufferedReader(fr);
+            //BufferedReader br = new BufferedReader(fr);
             Object obj;
             tsRead.init();
             tsRead.setBegin("Begin loading file...");
@@ -60,13 +60,27 @@ public class KochManager {
 //                edges.add(e);
 //            }
             String line = "";
-            while((line = br.readLine()) != null){
-                String[] splitString = line.split(";");
-                Edge e = new Edge(Double.parseDouble(splitString[0]),Double.parseDouble(splitString[0]),Double.parseDouble(splitString[2]),Double.parseDouble(splitString[3]), Color.valueOf(splitString[4]));
-                e.convertColor();
-                edges.add(e);                
+            int c;
+            while((c = fr.read()) > 0){
+                if(String.valueOf((char) c).matches(".")) {
+                    line += (char) c;
+                } else {
+                    String[] splitString = line.split(";");
+                    Edge e = new Edge(Double.parseDouble(splitString[0]),Double.parseDouble(splitString[1]),Double.parseDouble(splitString[2]),Double.parseDouble(splitString[3]), Color.valueOf(splitString[4]));
+                    e.convertColor();
+                    edges.add(e); 
+                    line = "";
+                }
+                
             }
             
+//            while((line = fr.read()) != null){
+//                String[] splitString = line.split(";");
+//                Edge e = new Edge(Double.parseDouble(splitString[0]),Double.parseDouble(splitString[1]),Double.parseDouble(splitString[2]),Double.parseDouble(splitString[3]), Color.valueOf(splitString[4]));
+//                e.convertColor();
+//                edges.add(e);                
+//            }
+//            
         } catch (IOException e) {}
 //        } catch (ClassNotFoundException e) {
 //            System.out.println(e);
