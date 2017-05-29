@@ -24,6 +24,7 @@ public class KochManager {
     private String outputFile;
     private ObjectOutputStream ooStream;
     private BufferedWriter out;
+    private FileWriter fw;
     private TimeStamp tsWrite;
 
     public KochManager(String outputFile) {
@@ -32,9 +33,9 @@ public class KochManager {
         this.outputFile = outputFile;
         tsWrite = new TimeStamp();
         try {
-            FileWriter fw = new FileWriter(outputFile);
-            out = new BufferedWriter(fw);
-            
+            fw = new FileWriter(outputFile);
+            //out = new BufferedWriter(fw);
+
             //OutputStream oStream = new FileOutputStream(outputFile);
             //BufferedOutputStream boStream = new BufferedOutputStream(oStream);
             //this.ooStream = new ObjectOutputStream(boStream);
@@ -42,7 +43,7 @@ public class KochManager {
             LOG.warning(e.toString());
         }
     }
-    
+
     private static final Logger LOG = Logger.getLogger(KochManager.class.getName());
 
     public void addEdges(List<Edge> es) {
@@ -58,7 +59,7 @@ public class KochManager {
         System.out.println("I am writing...");
         for (int i = 0; i < 3; i++) {
             //KochTask run = new KochTask(i, level, ooStream);
-            KochTask run = new KochTask(i, level, out);
+            KochTask run = new KochTask(i, level, fw);
             tasks.add(pool.submit(run));
         }
 
@@ -76,8 +77,10 @@ public class KochManager {
                 try {
 //                    ooStream.flush();
 //                    ooStream.close();
-                    out.flush();
-                    out.close();
+//                    out.flush();
+//                    out.close();
+                    fw.flush();
+                    fw.close();
                     tsWrite.setEnd("End writing file");
                     System.out.println("I am done writing...");
                     System.out.println("Writing for level " + level + ": " + tsWrite.toString());

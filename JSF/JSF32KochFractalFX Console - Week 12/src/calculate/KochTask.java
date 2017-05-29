@@ -27,6 +27,7 @@ public class KochTask implements Callable<List<Edge>>, Observer {
     private KochFractal f;
     private ObjectOutputStream ooStream;
     private BufferedWriter out;
+    private FileWriter fw;
 
     public KochTask(int edge, int level, ObjectOutputStream ooStream) {
         this.edge = edge;
@@ -45,18 +46,39 @@ public class KochTask implements Callable<List<Edge>>, Observer {
         this.edges = new ArrayList<Edge>();
         this.out = out;
     }
+    
+    public KochTask(int edge, int level, FileWriter fw) {
+        this.edge = edge;
+        this.f = new KochFractal();
+        this.f.setLevel(level);
+        this.f.addObserver(this);
+        this.edges = new ArrayList<Edge>();
+        this.fw = fw;
+    }
 
     public void update(Observable o, Object arg) {
         Edge e = (Edge) arg;
         edges.add(e);
-        synchronized(out.getClass()){
+//        synchronized(out.getClass()){
+//            try{
+//                out.write(e.X1 + ";");
+//                out.write(e.Y1 + ";");
+//                out.write(e.X2 + ";");
+//                out.write(e.Y2 + ";");
+//                out.write(e.color.toString());
+//                out.append("\n");
+//            } catch (IOException ex) {
+//                Logger.getLogger(KochTask.class.getName()).log(Level.SEVERE, null, ex);
+//            }
+//        }
+        synchronized(fw.getClass()){
             try{
-                out.write(e.X1 + ";");
-                out.write(e.Y1 + ";");
-                out.write(e.X2 + ";");
-                out.write(e.Y2 + ";");
-                out.write(e.color.toString());
-                out.append("\n");
+                fw.write(e.X1 + ";");
+                fw.write(e.Y1 + ";");
+                fw.write(e.X2 + ";");
+                fw.write(e.Y2 + ";");
+                fw.write(e.color.toString());
+                fw.append("\n");
             } catch (IOException ex) {
                 Logger.getLogger(KochTask.class.getName()).log(Level.SEVERE, null, ex);
             }

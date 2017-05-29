@@ -41,7 +41,7 @@ public class JSF31KochFractalFX extends Application {
 	private double lastDragX = 0.0;
 	private double lastDragY = 0.0;
 	
-	private String file = "/home/arnoudbevers/Desktop/test.bin";
+	private String file = "/home/arnoudbevers/Desktop/test.txt";
 
 	// Koch manager
 	// TO DO: Create class KochManager in package calculate
