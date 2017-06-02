@@ -1,0 +1,5 @@
+projectKey=my:S33-JSF-GSO
+serverUrl=http://localhost:9000
+dashboardUrl=http://localhost:9000/dashboard/index/my:S33-JSF-GSO
+ceTaskId=AVwRGV2JztpH71jbWrzf
+ceTaskUrl=http://localhost:9000/api/ce/task?id=AVwRGV2JztpH71jbWrzf
