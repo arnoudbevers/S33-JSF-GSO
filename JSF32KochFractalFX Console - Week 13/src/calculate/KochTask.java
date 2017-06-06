@@ -16,11 +16,14 @@ import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
 import java.util.concurrent.Callable;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * @author arnoudbevers
  */
 public class KochTask implements Callable<List<Edge>>, Observer {
+	private final static Logger LOG = Logger.getLogger(KochManager.class.getName());
 
 	private KochManager manager;
 	private int edge;
@@ -56,13 +59,13 @@ public class KochTask implements Callable<List<Edge>>, Observer {
         	try(ObjectOutputStream oos = new ObjectOutputStream(bos)){
         		oos.writeObject(e);
         	} catch (IOException ex) {
+        		LOG.log(Level.INFO, ex.getMessage(), ex);
 			}
         	byte[] array = bos.toByteArray();
-//        	ByteBuffer buf = ByteBuffer.allocate(array.length);
-//        	buf.put(array);
         	// Put byte array in file fucking fast
         	out.put(array);
         } catch (IOException ex) {
+        	LOG.log(Level.INFO, ex.getMessage(), ex);
         }
         
         

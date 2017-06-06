@@ -19,15 +19,18 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javafx.scene.paint.Color;
 import timeutil.TimeStamp;
 
 public class KochManager {
 
+    private final static Logger LOG = Logger.getLogger(KochManager.class.getName());
+
     private volatile List<Edge> edges;
-    public int count = 0;
-    public ExecutorService pool;
+    public static final ExecutorService pool = Executors.newFixedThreadPool(4);
     private String outputFile;
     private RandomAccessFile raf;
     private FileChannel fc;
@@ -35,14 +38,13 @@ public class KochManager {
 
     public KochManager(String outputFile) {
         this.edges = new ArrayList<Edge>();
-        this.pool = Executors.newFixedThreadPool(4);
         this.outputFile = outputFile;
 
         try {
             raf = new RandomAccessFile(new File(outputFile), "rw");
             fc = raf.getChannel();
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
+        } catch (FileNotFoundException ex) {
+            LOG.log(Level.INFO, ex.getMessage(), ex);
         }
     }
 
@@ -55,20 +57,22 @@ public class KochManager {
     public void calculateLevel(int level) {
         List<Future<List<Edge>>> tasks = new ArrayList<Future<List<Edge>>>();
         // Get amount edges per side
-        int amountEdges = (int) (3 * Math.pow(4, level - 1)) / 3;
+        int amountEdges = (int) (3 * Math.pow(4, level - 1.0)) / 3;
         // Create temporary edge
         Edge tmp = new Edge(0, 0, 0, 0, Color.WHITE);
-        int tmpLength = 0;
+        long tmpLength = 0;
 
         // Get length edge as byte array
         try (ByteArrayOutputStream bos = new ByteArrayOutputStream()) {
             try (ObjectOutputStream oos = new ObjectOutputStream(bos)) {
                 oos.writeObject(tmp);
             } catch (IOException ex) {
+                LOG.log(Level.INFO, ex.getMessage(), ex);
             }
             byte[] array = bos.toByteArray();
             tmpLength = array.length;
         } catch (IOException ex) {
+            LOG.log(Level.INFO, ex.getMessage(), ex);
         }
 
         ts.init();
@@ -81,7 +85,8 @@ public class KochManager {
             MappedByteBuffer out = null;
             try {
                 out = fc.map(MapMode.READ_WRITE, i * tmpLength * amountEdges, tmpLength * amountEdges);
-            } catch (IOException e) {
+            } catch (IOException ex) {
+                LOG.log(Level.INFO, ex.getMessage(), ex);
             }
             KochTask run = new KochTask(this, i, level, out);
             //KochTask run = new KochTask(this, i, level, fc);
@@ -93,10 +98,10 @@ public class KochManager {
                 for (Future<List<Edge>> fut : tasks) {
                     try {
                         addEdges(fut.get());
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    } catch (ExecutionException e) {
-                        e.printStackTrace();
+                    } catch (InterruptedException ex) {
+                        Thread.currentThread().interrupt();
+                    } catch (ExecutionException ex) {
+                        LOG.log(Level.INFO, ex.getMessage(), ex);
                     }
                 }
                 try {
@@ -106,9 +111,8 @@ public class KochManager {
                     file.renameTo(new File("/home/arnoudbevers/Desktop/edges" + level + "DONE.bin"));
                     fc.close();
                     raf.close();
-                    System.exit(0);
-                } catch (IOException e) {
-                    e.printStackTrace();
+                } catch (IOException ex) {
+                    LOG.log(Level.INFO, ex.getMessage(), ex);
                 }
             }
         });
