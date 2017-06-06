@@ -39,23 +39,23 @@ public class KochTask extends Task<List<Edge>> implements Observer {
     }
 
     public void update(Observable o, Object arg) {
-        try {
-            Edge e = (Edge) arg;
-            edges.add(e);
-            Thread.sleep(sleep);
-
-            Platform.runLater(new Runnable() {
-                @Override
-                public void run() {
-                    Edge tmp = new Edge(e.X1, e.Y1, e.X2, e.Y2, Color.WHITE);
-                    manager.kffx.drawEdge(tmp);
-                }
-            });
-
-            updateProgress(edges.size(), f.getNrOfEdges() / 3);
-        } catch (InterruptedException e) {
-            Thread.currentThread().interrupt();
-        }
+    	try {
+	        Edge e = (Edge) arg;
+	        edges.add(e);
+	        Thread.sleep(sleep);
+	        
+	        Platform.runLater(new Runnable() {
+				@Override
+				public void run() {
+					Edge tmp = new Edge(e.X1, e.Y1, e.X2, e.Y2, Color.WHITE);
+			        manager.kffx.drawEdge(tmp);
+				}
+	        });
+	        
+	        updateProgress(edges.size(), f.getNrOfEdges()/3);
+    	} catch(InterruptedException e) {
+    		Thread.currentThread().interrupt();
+    	}
     }
 
     public List<Edge> call() throws Exception {

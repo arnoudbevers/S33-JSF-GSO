@@ -75,7 +75,6 @@ public class KochManager {
                 Edge e = (Edge) ois.readObject();
                 e.convertColor();
                 edges.add(e);
-                System.out.println(edges.size());
             }
         } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
@@ -85,13 +84,14 @@ public class KochManager {
         System.out.println(ts.toString());
 
         int amount = edges.size();
-        int amountEdges = (int) ((Math.log(amount / 3) / Math.log(4)) + 1);
-        kffx.setCurrentLevel(amountEdges);
+        int level = (int) ((Math.log(amount / 3) / Math.log(4)) + 1);
+        kffx.setCurrentLevel(level);
 
         Platform.runLater(new Runnable() {
             @Override
             public void run() {
-                kffx.setTextNrEdges(amountEdges + "");
+                kffx.setTextLevel("Level: " + level + "");
+                kffx.setTextNrEdges(amount + "");
                 drawEdges();
             }
         });
