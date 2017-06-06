@@ -83,8 +83,8 @@ public class KochManager {
 				out = fc.map(MapMode.READ_WRITE, i*tmpLength*amountEdges, tmpLength*amountEdges);
 			} catch (IOException e) {
 			}
-            //KochTask run = new KochTask(this, i, level, out);
-			KochTask run = new KochTask(this, i, level, fc);
+            KochTask run = new KochTask(this, i, level, out);
+			//KochTask run = new KochTask(this, i, level, fc);
             tasks.add(pool.submit(run));
         }
         

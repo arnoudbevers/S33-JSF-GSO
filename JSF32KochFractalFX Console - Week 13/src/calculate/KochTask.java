@@ -58,10 +58,8 @@ public class KochTask implements Callable<List<Edge>>, Observer {
         	} catch (IOException ex) {
 			}
         	byte[] array = bos.toByteArray();
-        	ByteBuffer buf = ByteBuffer.allocate(array.length);
-        	buf.put(array);
         	// Put byte array in file fucking fast
-        	fc.write(buf);
+        	out.put(array);
         } catch (IOException ex) {
         }
         

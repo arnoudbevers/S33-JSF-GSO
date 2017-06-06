@@ -62,29 +62,30 @@ public class KochManager {
         ts.init();
         ts.setBegin("Start reading....");
         
-//    	RandomAccessFile raf;
-//		try {
-//			raf = new RandomAccessFile(new File(file), "r");
-//			FileChannel fc = raf.getChannel();
-//			
-//			MappedByteBuffer mbb = fc.map(MapMode.READ_ONLY, 0, raf.length());
-//			for(int i = 0; i <= raf.length()-tmpLength; i+= tmpLength) {
-//				byte[] edgeBytes = new byte[tmpLength];
-//				mbb.get(edgeBytes, 0, tmpLength);
-//				ObjectInputStream ois = new ObjectInputStream(new ByteArrayInputStream(edgeBytes));
-//				Edge e = (Edge) ois.readObject();
-//				e.convertColor();
-//				edges.add(e);
-//			}
-//		} catch (IOException | ClassNotFoundException e) {
-//			e.printStackTrace();
-//		}
+    	RandomAccessFile raf;
+		try {
+			raf = new RandomAccessFile(new File(file), "r");
+			FileChannel fc = raf.getChannel();
+			
+			MappedByteBuffer mbb = fc.map(MapMode.READ_ONLY, 0, raf.length());
+			for(int i = 0; i <= raf.length()-tmpLength; i+= tmpLength) {
+				byte[] edgeBytes = new byte[tmpLength];
+				mbb.get(edgeBytes, 0, tmpLength);
+				ObjectInputStream ois = new ObjectInputStream(new ByteArrayInputStream(edgeBytes));
+				Edge e = (Edge) ois.readObject();
+				e.convertColor();
+				edges.add(e);
+				System.out.println(edges.size());
+			}
+		} catch (IOException | ClassNotFoundException e) {
+			e.printStackTrace();
+		}
 		
 		ts.setEnd("Stopped Reading...");
 		System.out.println(ts.toString());
 		
     	int amount = edges.size();
-    	int amountEdges = (int) ((Math.log(amount/3)/Math.log(4))+1)+1;
+    	int amountEdges = (int) ((Math.log(amount/3)/Math.log(4))+1);
     	kffx.setCurrentLevel(amountEdges);
     	
 		Platform.runLater(new Runnable() {
