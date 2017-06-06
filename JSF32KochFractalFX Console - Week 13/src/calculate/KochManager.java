@@ -111,6 +111,7 @@ public class KochManager {
                     file.renameTo(new File("/home/arnoudbevers/Desktop/edges" + level + "DONE.bin"));
                     fc.close();
                     raf.close();
+                    System.exit(0);
                 } catch (IOException ex) {
                     LOG.log(Level.INFO, ex.getMessage(), ex);
                 }
