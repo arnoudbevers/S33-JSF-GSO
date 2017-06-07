@@ -79,9 +79,14 @@ public class KochTask implements Callable<List<Edge>>, Observer {
                 LOG.log(Level.INFO, ex.getMessage(), ex);
             }
             byte[] array = bos.toByteArray();
-            System.out.println(array.length);
-            lock = fc.lock(((edge) / 3) * amountEdges * array.length, array.length, true);
-            MappedByteBuffer map = fc.map(MapMode.READ_WRITE, ((edge) / 3) * amountEdges * array.length, array.length);
+            MappedByteBuffer map = null;
+            
+            synchronized(manager) {
+	            lock = fc.lock(manager.edgeCount * array.length, array.length, true);
+	            map = fc.map(MapMode.READ_WRITE, manager.edgeCount * array.length, array.length);
+	            manager.edgeCount++;
+            }
+            
             map.put(array);
             lock.release();
         } catch (IOException ex) {

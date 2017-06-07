@@ -35,6 +35,8 @@ public class KochManager {
     private RandomAccessFile raf;
     private FileChannel fc;
     private TimeStamp ts = new TimeStamp();
+    
+    public int edgeCount = 0;
 
     public KochManager(String outputFile) {
         this.edges = new ArrayList<Edge>();
