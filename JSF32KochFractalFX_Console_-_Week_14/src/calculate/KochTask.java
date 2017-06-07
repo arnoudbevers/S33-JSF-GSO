@@ -8,10 +8,10 @@ package calculate;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
-import java.nio.ByteBuffer;
 import java.nio.MappedByteBuffer;
-import java.nio.channels.*;
+import java.nio.channels.FileChannel;
 import java.nio.channels.FileChannel.MapMode;
+import java.nio.channels.FileLock;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Observable;
@@ -82,10 +82,11 @@ public class KochTask implements Callable<List<Edge>>, Observer {
             MappedByteBuffer map = null;
             
             synchronized(manager) {
-	            lock = fc.lock(manager.edgeCount * array.length, array.length, true);
-	            map = fc.map(MapMode.READ_WRITE, manager.edgeCount * array.length, array.length);
-	            manager.edgeCount++;
+	            lock = fc.lock(4 + manager.edgeCount * array.length, array.length, false);
+	            map = fc.map(MapMode.READ_WRITE, 4 + manager.edgeCount * array.length, array.length);
+	            manager.addEdgeCount();
             }
+            
             map.put(array);
             lock.release();
         } catch (IOException ex) {
@@ -93,7 +94,7 @@ public class KochTask implements Callable<List<Edge>>, Observer {
         } finally {
             try {
                 if (lock != null) {
-                    lock.release();
+                	lock.close();
                 }
             } catch (IOException ex) {
                 LOG.log(Level.INFO, ex.getMessage(), ex);
@@ -130,6 +131,7 @@ public class KochTask implements Callable<List<Edge>>, Observer {
                 f.generateRightEdge();
                 break;
         }
+        
         return edges;
     }
 
