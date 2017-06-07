@@ -48,7 +48,7 @@ public class JSF31KochFractalFX extends Application {
     private double lastDragX = 0.0;
     private double lastDragY = 0.0;
 
-    private String file = "/home/arnoudbevers/Desktop";
+    private String file = System.getProperty("user.home").toString() + "\\Desktop";
 
     // Koch manager
     // TO DO: Create class KochManager in package calculate
@@ -216,7 +216,7 @@ public class JSF31KochFractalFX extends Application {
     }
 
     public String canReadFile(String file) {
-        System.out.println("Now checking:" + file);
+        System.out.println("Now checking: " + file);
         final WatchService watcher;
         Path dir = Paths.get(file);
         WatchKey key;

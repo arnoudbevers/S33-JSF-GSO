@@ -13,6 +13,8 @@ import java.io.RandomAccessFile;
 import java.nio.MappedByteBuffer;
 import java.nio.channels.FileChannel;
 import java.nio.channels.FileChannel.MapMode;
+import java.nio.channels.FileLock;
+import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
@@ -90,8 +92,8 @@ public class KochManager {
             } catch (IOException ex) {
                 LOG.log(Level.INFO, ex.getMessage(), ex);
             }
-            KochTask run = new KochTask(this, i, level, out);
-            //KochTask run = new KochTask(this, i, level, fc);
+            //KochTask run = new KochTask(this, i, level, out);
+            KochTask run = new KochTask(this, i, level, fc);
             tasks.add(pool.submit(run));
         }
 
@@ -110,9 +112,12 @@ public class KochManager {
                     ts.setEnd("Ended Calculating & Writing for level: " + level + "...");
                     System.out.println(ts.toString());
                     File file = new File(outputFile);
-                    file.renameTo(new File("/home/arnoudbevers/Desktop/edges" + level + "DONE.bin"));
+                    System.out.println(file);
                     fc.close();
                     raf.close();
+                    file.renameTo(new File(System.getProperty("user.home") + level + "DONE.bin"));
+                    System.out.println(new File(System.getProperty("user.home") + "\\Desktop\\edges" + level + "DONE.bin"));
+                    System.out.println(file);
                     System.exit(0);
                 } catch (IOException ex) {
                     LOG.log(Level.INFO, ex.getMessage(), ex);

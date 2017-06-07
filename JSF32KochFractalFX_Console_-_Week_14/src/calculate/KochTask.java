@@ -86,7 +86,6 @@ public class KochTask implements Callable<List<Edge>>, Observer {
 	            map = fc.map(MapMode.READ_WRITE, manager.edgeCount * array.length, array.length);
 	            manager.edgeCount++;
             }
-            
             map.put(array);
             lock.release();
         } catch (IOException ex) {
