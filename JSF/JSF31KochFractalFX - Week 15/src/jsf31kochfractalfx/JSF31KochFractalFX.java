@@ -183,6 +183,7 @@ public class JSF31KochFractalFX extends Application {
 
 		// Create Koch manager and set initial level
 		resetZoom();
+		clearKochPanel();
 		// kochManager = new KochManager(this);
 		// kochManager.changeLevel(currentLevel);
 
@@ -200,7 +201,6 @@ public class JSF31KochFractalFX extends Application {
 		primaryStage.setScene(scene);
 		primaryStage.show();
 		
-		clearKochPanel();
 	}
 
 	public void stop() {
