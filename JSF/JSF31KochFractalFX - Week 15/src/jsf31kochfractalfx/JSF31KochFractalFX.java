@@ -233,6 +233,7 @@ public class JSF31KochFractalFX extends Application {
 
 		// Draw line
 		gc.strokeLine(e1.X1, e1.Y1, e1.X2, e1.Y2);
+                gc.setFill(Color.BLACK);
 	}
 
 	public void setTextNrEdges(String text) {

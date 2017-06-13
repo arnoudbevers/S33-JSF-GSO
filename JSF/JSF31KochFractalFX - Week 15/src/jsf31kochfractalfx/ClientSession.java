@@ -92,7 +92,7 @@ class ClientSession {
             } //One by one
             else {
                 edges = new ArrayList<>();
-                for (int i = 0; i < 3 * Math.pow(4, level); i++) {
+                for (int i = 0; i < 3 * Math.pow(4, level - 1); i++) {
                     Edge e = (Edge) in.readObject();
                     edges.add(e);
                     e.convertColor();
@@ -100,6 +100,10 @@ class ClientSession {
                 }
                 System.out.println("Edges received one by one!");
             }
+            out.close();
+            in.close();
+            outStream.close();
+            inStream.close();
             System.out.println("Client edges count: " + edges.size());
 
         } catch (Exception ex) {

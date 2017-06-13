@@ -24,13 +24,13 @@ public class ServerSession implements Runnable {
     private OutputStream outStream = null;
     private ObjectInputStream in;
     private ObjectOutputStream out;
-    
+
     private boolean allEdges;
-    
-     //Canvas
+
+    //Canvas
     private final int kpWidth = 500;
     private final int kpHeight = 500;
-    
+
     // Zoom and drag
     private double zoomTranslateX = 0.0;
     private double zoomTranslateY = 0.0;
@@ -40,49 +40,48 @@ public class ServerSession implements Runnable {
     private Socket clientSocket;
     private int level;
     private List<Edge> edges;
-    
-    public ServerSession(Socket clientSocket){
+
+    public ServerSession(Socket clientSocket) {
         this.clientSocket = clientSocket;
     }
-    
-    public synchronized List<Edge> generateFractal(int level){
+
+    public synchronized List<Edge> generateFractal(int level) {
         KochManager manager = new KochManager();
-        return manager.generateEdges(level);       
+        return manager.generateEdges(level);
     }
-    
+
     @Override
     public void run() {
-        try{
+        try {
             this.inStream = clientSocket.getInputStream();
             this.outStream = clientSocket.getOutputStream();
-            
+
             this.in = new ObjectInputStream(inStream);
             this.out = new ObjectOutputStream(outStream);
-            
+
             out.writeObject("Level: ");
-            
+
             //Requesting the level from client
             Object inObject = in.readObject();
             System.out.println(inObject);
-            
+
             //Setting the level
-            level = (int)inObject;
-            
+            level = (int) inObject;
+
             //Requesting whether all edges are to be read or one by one
             inObject = in.readObject();
-            allEdges = (boolean)inObject;
+            allEdges = (boolean) inObject;
             System.out.println("Edges sent how: " + allEdges);
             //Filling the list
             edges = generateFractal(level);
-            
+
             //If all edges are to be sent in one time
-            if(allEdges){
+            if (allEdges) {
                 out.writeObject(edges);
                 System.out.println("All edges sent at once!");
-            }else{
+            } else {
                 //Else write one by one
-                for(int i = 0; i < this.edges.size(); i++)
-                {
+                for (int i = 0; i < this.edges.size(); i++) {
                     out.writeObject(edges.get(i));
                     out.flush();
                 }
@@ -91,13 +90,13 @@ public class ServerSession implements Runnable {
             System.out.println("Server edges count: " + edges.size());
         } catch (IOException | ClassNotFoundException ex) {
             Logger.getLogger(ServerSession.class.getName()).log(Level.SEVERE, null, ex);
-        }while(true)
-        {
+        }
+        while (true) {
             try {
                 Object inObject = in.readObject();
 
                 System.out.println("Object received");
-                ZoomObject zo = (ZoomObject)inObject;
+                ZoomObject zo = (ZoomObject) inObject;
                 System.out.println(zo.getPrimary());
 
                 Zoom(zo);
@@ -105,8 +104,7 @@ public class ServerSession implements Runnable {
                 this.edges = generateFractal(level);
 
                 List<Edge> edgesAfterZoom = new ArrayList<>();
-                for (Edge e : this.edges)
-                {
+                for (Edge e : this.edges) {
                     e.convertColor();
                     edgesAfterZoom.add(edgeAfterZoomAndDrag(e));
                 }
@@ -116,15 +114,19 @@ public class ServerSession implements Runnable {
                 out.writeObject(edges);
                 System.out.println("Edges sent (after zoom)");
 
+                out.close();
+                in.close();
+                outStream.close();
+                inStream.close();
             } catch (IOException ex) {
                 Logger.getLogger(ServerSession.class.getName()).log(Level.SEVERE, null, ex);
             } catch (ClassNotFoundException ex) {
                 Logger.getLogger(ServerSession.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
+
     }
-    
-    
+
     private void resetZoom() {
         int kpSize = Math.min(kpWidth, kpHeight);
         zoom = kpSize;
@@ -132,7 +134,7 @@ public class ServerSession implements Runnable {
         zoomTranslateX = (kpWidth - kpSize) / 2.0;
         zoomTranslateY = (kpHeight - kpSize) / 2.0;
     }
-    
+
     private Edge edgeAfterZoomAndDrag(Edge e) {
         return new Edge(
                 e.X1 * zoom,
@@ -141,9 +143,8 @@ public class ServerSession implements Runnable {
                 e.Y2 * zoom,
                 e.color);
     }
-    
-    private void Zoom(ZoomObject zo)
-    {
+
+    private void Zoom(ZoomObject zo) {
         if (true) {//Math.abs(zo.getX() - startPressedX) < 1.0 && Math.abs(zo.getY() - startPressedY) < 1.0) {
             double originalPointClickedX = (zo.getX() - zoomTranslateX) / zoom;
             double originalPointClickedY = (zo.getY() - zoomTranslateY) / zoom;
@@ -154,10 +155,7 @@ public class ServerSession implements Runnable {
             }
             zoomTranslateX = (int) (zo.getX() - originalPointClickedX * zoom);
             zoomTranslateY = (int) (zo.getY() - originalPointClickedY * zoom);
-            
+
         }
     }
 }
-    
-    
-
