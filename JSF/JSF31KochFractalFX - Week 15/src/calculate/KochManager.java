@@ -149,6 +149,8 @@ public class KochManager {
                 @Override
                 public void handle(WorkerStateEvent event) {
                     if (run.getValue().size() > 0) {
+                        Edge tmp = (Edge)run.getValue();
+                        tmp.convertColor();
                         addEdges(run.getValue());
 
                         num++;

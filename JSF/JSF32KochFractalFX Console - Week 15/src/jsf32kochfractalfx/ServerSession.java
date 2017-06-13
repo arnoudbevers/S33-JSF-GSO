@@ -92,39 +92,38 @@ public class ServerSession implements Runnable {
         } catch (IOException | ClassNotFoundException ex) {
             Logger.getLogger(ServerSession.class.getName()).log(Level.SEVERE, null, ex);
         }
-        while (true) {
-            try {
-                Object inObject = in.readObject();
-
-                System.out.println("Object received");
-                ZoomObject zo = (ZoomObject) inObject;
-                System.out.println(zo.getPrimary());
-
-                Zoom(zo);
-
-                this.edges = generateFractal(level);
-
-                List<Edge> edgesAfterZoom = new ArrayList<>();
-                for (Edge e : this.edges) {
-                    e.convertColor();
-                    edgesAfterZoom.add(edgeAfterZoomAndDrag(e));
-                }
-
-                edges = edgesAfterZoom;
-
-                out.writeObject(edges);
-                System.out.println("Edges sent (after zoom)");
-
-                out.close();
-                in.close();
-                outStream.close();
-                inStream.close();
-            } catch (IOException ex) {
-                Logger.getLogger(ServerSession.class.getName()).log(Level.SEVERE, null, ex);
-            } catch (ClassNotFoundException ex) {
-                Logger.getLogger(ServerSession.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        }
+//        while (true) {
+//            try {
+//                Object inObject = in.readObject();
+//
+//                System.out.println("Object received");
+//                ZoomObject zo = (ZoomObject) inObject;
+//                System.out.println(zo.getPrimary());
+//
+//                Zoom(zo);
+//
+//                this.edges = generateFractal(level);
+//
+//                List<Edge> edgesAfterZoom = new ArrayList<>();
+//                for (Edge e : this.edges) {
+//                    edgesAfterZoom.add(edgeAfterZoomAndDrag(e));
+//                }
+//
+//                edges = edgesAfterZoom;
+//
+//                out.writeObject(edges);
+//                System.out.println("Edges sent (after zoom)");
+//
+//                out.close();
+//                in.close();
+//                outStream.close();
+//                inStream.close();
+//            } catch (IOException ex) {
+//                Logger.getLogger(ServerSession.class.getName()).log(Level.SEVERE, null, ex);
+//            } catch (ClassNotFoundException ex) {
+//                Logger.getLogger(ServerSession.class.getName()).log(Level.SEVERE, null, ex);
+//            }
+//        }
 
     }
 

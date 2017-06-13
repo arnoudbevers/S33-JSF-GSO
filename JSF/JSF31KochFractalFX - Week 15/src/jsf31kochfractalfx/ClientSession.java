@@ -25,6 +25,8 @@ class ClientSession {
     private OutputStream outStream = null;
     private ObjectInputStream in;
     private ObjectOutputStream out;
+    
+    
 
     //Socket
     Socket socket = null;
@@ -49,7 +51,7 @@ class ClientSession {
             Scanner scanner = new Scanner(System.in);
             String levelString = scanner.nextLine();
             int level = 1;
-            
+
             try {
                 level = Integer.parseInt(levelString);
                 if (level < 1) {
@@ -79,15 +81,15 @@ class ClientSession {
             //Tell client way of reading
             out.writeObject(allEdges);
             out.flush();
-            
+
             //All edges at once
             if (allEdges) {
                 edges = (List<Edge>) in.readObject();
-                System.out.println("All edges received at once!");
                 for (Edge e : edges) {
                     e.convertColor();
                     kffx.drawEdge(e);
                 }
+                System.out.println("All edges received at once!");
             } //One by one
             else {
                 edges = new ArrayList<>();
@@ -103,10 +105,9 @@ class ClientSession {
             in.close();
             outStream.close();
             inStream.close();
-            System.out.println("Client edges count: " + edges.size());
-            System.out.println("Level: " + level);
-            //kffx.setLevel(level);
-            //kffx.setNrEdges(edges.size());
+
+            kffx.setLevel(level);
+            kffx.setNrEdges(edges.size());
 
         } catch (Exception ex) {
             System.out.println(ex.toString());
