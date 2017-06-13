@@ -10,6 +10,8 @@ import java.io.RandomAccessFile;
 import java.nio.MappedByteBuffer;
 import java.nio.channels.FileChannel;
 import java.nio.channels.FileLock;
+import java.util.concurrent.locks.Lock;
+
 import javafx.application.Platform;
 import javafx.scene.paint.Color;
 import timeutil.TimeStamp;
@@ -54,48 +56,61 @@ public class ReadRunnable implements Runnable {
         RandomAccessFile raf;
 
         try {
+        	while(!new File(file).exists()) {}
+        	
             raf = new RandomAccessFile(new File(file), "r");
             FileChannel fc = raf.getChannel();
+            
+            while(raf.length() < 4) {}
+            
+            Platform.runLater(new Runnable() {
+            	public void run(){
+                	manager.drawEdges();
+                }
+            });
+            
             MappedByteBuffer mb1 = fc.map(FileChannel.MapMode.READ_ONLY, 0, 4);
             while (true) {
-                int edgesWritten = mb1.get(0);
+            	FileLock fl = fc.lock(0, 4, true);
+                int edgesWritten = mb1.getInt(0);
+                fl.release();
+                
                 if (lastWritten < edgesWritten) {
                     FileLock lock = null;
-                    MappedByteBuffer mbb = fc.map(FileChannel.MapMode.READ_ONLY, lastWritten * tmpLength, (edgesWritten - lastWritten) * tmpLength);
-                    for (int i = 0; i <= raf.length() - tmpLength; i += tmpLength) {
-                        lock = fc.lock(lastWritten * tmpLength, (edgesWritten - lastWritten) * tmpLength, true);
+                    MappedByteBuffer mbb = fc.map(FileChannel.MapMode.READ_ONLY, 4 + lastWritten * tmpLength, (edgesWritten - lastWritten) * tmpLength);
+                    for (int i = 0; i <= mbb.limit() - tmpLength; i += tmpLength) {
+                        lock = fc.lock(4 + lastWritten * tmpLength + i, tmpLength, true);
                         byte[] edgeBytes = new byte[tmpLength];
                         mbb.get(edgeBytes, 0, tmpLength);
                         ObjectInputStream ois = new ObjectInputStream(new ByteArrayInputStream(edgeBytes));
                         Edge e = (Edge) ois.readObject();
                         e.convertColor();
-                        manager.edges.add(e);
+                        
+                        synchronized(manager.edges) {
+                        	manager.edges.add(e);
+                        }
+
+                        Platform.runLater(new Runnable() {
+                        	public void run(){
+                        		manager.kffx.drawEdge(e);
+	                        }
+	                    });
+                        
                         lastWritten++;
                         lock.release();
-
                     }
                 }
             }
 
         } catch (IOException | ClassNotFoundException e) {
-            e.printStackTrace();
+        	e.printStackTrace();
         }
 
         ts.setEnd("Stopped Reading...");
         System.out.println(ts.toString());
-
+        
         int amount = manager.edges.size();
         int level = (int) ((Math.log(amount / 3) / Math.log(4)) + 1);
         manager.kffx.setCurrentLevel(level);
-
-        Platform.runLater(new Runnable() {
-            @Override
-            public void run() {
-                manager.kffx.setTextLevel("Level: " + level + "");
-                manager.kffx.setTextNrEdges(amount + "");
-                manager.drawEdges();
-            }
-        });
     }
-
 }

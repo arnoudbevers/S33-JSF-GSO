@@ -123,15 +123,15 @@ public class KochManager {
 	}
 
 	public void addEdgeCount() throws IOException {
-		FileLock lock = fc.lock(0, 4, false);
+		FileLock lock = fc.lock(0, 4, true);
 		MappedByteBuffer map = fc.map(MapMode.READ_WRITE, 0, 4);
-		
-		synchronized(this) {
+
+		synchronized (this) {
 			edgeCount++;
-			map.putInt(edgeCount);
+			map.putInt(0, edgeCount);
 		}
-		
-        lock.release();
-        lock.close();
+
+		lock.release();
+		lock.close();
 	}
 }

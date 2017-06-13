@@ -17,6 +17,9 @@ import java.nio.file.WatchKey;
 import java.nio.file.WatchService;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
+import javax.sound.midi.Soundbank;
+
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
@@ -48,7 +51,7 @@ public class JSF31KochFractalFX extends Application {
     private double lastDragX = 0.0;
     private double lastDragY = 0.0;
     
-    private int level = 4;
+    private int level = 5;
     private String file = System.getProperty("user.home").toString() + "//Desktop//edges" + level + ".bin";
 
     // Koch manager

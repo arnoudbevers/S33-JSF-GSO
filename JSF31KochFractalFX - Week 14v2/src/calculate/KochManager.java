@@ -168,8 +168,10 @@ public class KochManager {
 
         kffx.setTextDraw("Drawing...");
 
-        for (Edge e : edges) {
-            kffx.drawEdge(e);
+        synchronized(edges) {
+	        for (Edge e : edges) {
+	            kffx.drawEdge(e);
+	        }
         }
 
         tsDraw.setEnd("End drawing fractals");
