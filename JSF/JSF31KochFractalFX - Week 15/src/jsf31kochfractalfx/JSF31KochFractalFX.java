@@ -233,7 +233,6 @@ public class JSF31KochFractalFX extends Application {
 
 		// Draw line
 		gc.strokeLine(e1.X1, e1.Y1, e1.X2, e1.Y2);
-                gc.setFill(Color.BLACK);
 	}
 
 	public void setTextNrEdges(String text) {
@@ -351,7 +350,6 @@ public class JSF31KochFractalFX extends Application {
 
 	private Edge edgeAfterZoomAndDrag(Edge e) {
                 e.convertColor();
-                System.out.println(e);
 		return new Edge(e.X1 * zoom + zoomTranslateX, e.Y1 * zoom + zoomTranslateY, e.X2 * zoom + zoomTranslateX,
 				e.Y2 * zoom + zoomTranslateY, e.color);
                 

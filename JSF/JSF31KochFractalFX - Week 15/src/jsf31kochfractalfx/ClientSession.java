@@ -57,7 +57,6 @@ class ClientSession {
                 } else if (level >= 10) {
                     level = 10;
                 }
-                System.out.println(level);
             } catch (Exception ex) {
                 System.out.println("No legal level filled in. Level set to 1!");
                 Logger.getLogger(ClientSession.class.getName()).log(Level.SEVERE, null, ex);
@@ -73,13 +72,14 @@ class ClientSession {
                 allEdges = false;
             }
 
+            System.out.println("AllEdges: " + allEdges);
             //Tell client level
             out.writeObject(level);
             out.flush();
             //Tell client way of reading
             out.writeObject(allEdges);
             out.flush();
-
+            
             //All edges at once
             if (allEdges) {
                 edges = (List<Edge>) in.readObject();
@@ -87,7 +87,6 @@ class ClientSession {
                 for (Edge e : edges) {
                     e.convertColor();
                     kffx.drawEdge(e);
-                    System.out.println(e);
                 }
             } //One by one
             else {
@@ -97,6 +96,7 @@ class ClientSession {
                     edges.add(e);
                     e.convertColor();
                     kffx.drawEdge(e);
+                    System.out.println("Edges count one by one:" + edges.size());
                 }
                 System.out.println("Edges received one by one!");
             }
@@ -107,6 +107,7 @@ class ClientSession {
             System.out.println("Client edges count: " + edges.size());
 
         } catch (Exception ex) {
+            System.out.println(ex.toString());
             Logger.getLogger(ClientSession.class.getName()).log(Level.SEVERE, null, ex);
         }
     }

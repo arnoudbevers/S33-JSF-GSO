@@ -83,6 +83,7 @@ public class ServerSession implements Runnable {
                 //Else write one by one
                 for (int i = 0; i < this.edges.size(); i++) {
                     out.writeObject(edges.get(i));
+                    System.out.println("Edge sent one by one: " + edges.get(i));
                     out.flush();
                 }
                 System.out.println("Edges sent one by one!");
