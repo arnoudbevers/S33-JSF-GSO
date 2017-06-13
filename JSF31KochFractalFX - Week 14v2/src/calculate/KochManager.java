@@ -29,7 +29,7 @@ public class KochManager {
     public JSF31KochFractalFX kffx;
     private TimeStamp tsCalc;
     private TimeStamp tsDraw;
-    private volatile List<Edge> edges;
+    volatile List<Edge> edges;
     public int count = 0;
     public ExecutorService pool;
     private int num = 0;

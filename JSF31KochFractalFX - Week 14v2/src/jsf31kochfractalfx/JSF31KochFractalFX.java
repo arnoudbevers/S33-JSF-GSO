@@ -47,8 +47,9 @@ public class JSF31KochFractalFX extends Application {
     private double startPressedY = 0.0;
     private double lastDragX = 0.0;
     private double lastDragY = 0.0;
-
-    private String file = System.getProperty("user.home").toString() + "\\Desktop";
+    
+    private int level = 4;
+    private String file = System.getProperty("user.home").toString() + "//Desktop//edges" + level + ".bin";
 
     // Koch manager
     // TO DO: Create class KochManager in package calculate
@@ -193,12 +194,15 @@ public class JSF31KochFractalFX extends Application {
 
         kochManager = new KochManager(this);
         //TODO - Only loadfile when file is edited.
-        String fileToRead = "";
-         while ((fileToRead = canReadFile(file)) == "") {
-            fileToRead = canReadFile(file);
-        }
-        System.out.println("I can read now on path" + fileToRead);
-        kochManager.loadFile(fileToRead);
+//        String fileToRead = "";
+//         while ((fileToRead = canReadFile(file)) == "") {
+//            fileToRead = canReadFile(file);
+//        }
+        //System.out.println("I can read now on path" + fileToRead);
+        ReadRunnable run = new ReadRunnable(kochManager, file);
+        Thread t = new Thread(run);
+        t.start();       
+        //kochManager.loadFile(file);
 
         // Create the scene and add the grid pane
         Group root = new Group();
