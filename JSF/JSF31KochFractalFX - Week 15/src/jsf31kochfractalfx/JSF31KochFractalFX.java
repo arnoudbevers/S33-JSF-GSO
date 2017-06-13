@@ -199,6 +199,8 @@ public class JSF31KochFractalFX extends Application {
 		primaryStage.setTitle("Koch Fractal");
 		primaryStage.setScene(scene);
 		primaryStage.show();
+		
+		clearKochPanel();
 	}
 
 	public void stop() {
