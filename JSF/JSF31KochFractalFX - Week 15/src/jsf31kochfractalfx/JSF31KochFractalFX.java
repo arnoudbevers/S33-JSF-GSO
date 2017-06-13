@@ -358,6 +358,15 @@ public class JSF31KochFractalFX extends Application {
 				e.Y2 * zoom + zoomTranslateY, e.color);
                 
 	}
+        
+        void setLevel(int level){
+            kochManager.changeLevel(level);
+            this.setTextLevel(String.valueOf(level));
+        }
+        
+        void setNrEdges(int size){
+            this.setTextNrEdges("Nr. edges: " + size);
+        }
 
 	/**
 	 * The main() method is ignored in correctly deployed JavaFX application.

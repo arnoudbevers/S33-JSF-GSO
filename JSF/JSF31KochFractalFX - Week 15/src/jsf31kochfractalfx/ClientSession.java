@@ -96,7 +96,6 @@ class ClientSession {
                     edges.add(e);
                     e.convertColor();
                     kffx.drawEdge(e);
-                    System.out.println("Edges count one by one:" + edges.size());
                 }
                 System.out.println("Edges received one by one!");
             }
@@ -105,6 +104,9 @@ class ClientSession {
             outStream.close();
             inStream.close();
             System.out.println("Client edges count: " + edges.size());
+            System.out.println("Level: " + level);
+            //kffx.setLevel(level);
+            //kffx.setNrEdges(edges.size());
 
         } catch (Exception ex) {
             System.out.println(ex.toString());
