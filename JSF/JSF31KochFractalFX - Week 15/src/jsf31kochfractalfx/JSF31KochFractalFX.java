@@ -219,11 +219,11 @@ public class JSF31KochFractalFX extends Application {
 		GraphicsContext gc = kochPanel.getGraphicsContext2D();
 
 		// Adjust edge for zoom and drag
-		Edge e1 = edgeAfterZoomAndDrag(e);
+		//Edge e1 = edgeAfterZoomAndDrag(e);
 
 		// Set line color
-                if(e1.color.toString() != "0x00000000")
-                    gc.setStroke(e1.color);
+                if(e.color.toString() != "0x00000000")
+                    gc.setStroke(e.color);
 
 		// Set line width depending on level
 		if (currentLevel <= 3) {
@@ -235,7 +235,9 @@ public class JSF31KochFractalFX extends Application {
 		}
 
 		// Draw line
-		gc.strokeLine(e1.X1, e1.Y1, e1.X2, e1.Y2);
+                System.out.println(e.X1 + " " + e.Y1 + " " + e.X2 + " " + e.Y2 + " " + e.color);
+                //System.out.println(e1.X1 + " " + e1.Y1 + " " + e1.X2 + " " + e1.Y2 + " " + e1.color);
+		gc.strokeLine(e.X1, e.Y1, e.X2, e.Y2);
 	}
 
 	public void setTextNrEdges(String text) {

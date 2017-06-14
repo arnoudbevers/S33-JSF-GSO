@@ -149,11 +149,8 @@ public class KochManager {
                 @Override
                 public void handle(WorkerStateEvent event) {
                     if (run.getValue().size() > 0) {
-                        Edge tmp = (Edge)run.getValue();
-                        tmp.convertColor();
-                        addEdges(run.getValue());
-
-                        num++;
+                       addEdges((List<Edge>)run.getValue());
+                       num++;
 
                         if (num == 3) {
                             tsCalc.setEnd("End calculating fractals");
@@ -177,6 +174,7 @@ public class KochManager {
         kffx.setTextDraw("Drawing...");
 
         for (Edge e : edges) {
+            System.out.println("Color request draw: " + e.color.toString());
             kffx.drawEdge(e);
         }
 
